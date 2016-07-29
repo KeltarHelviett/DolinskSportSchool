@@ -10,7 +10,7 @@ namespace DolinskSportSchool
     {
         public string name;
         public string displayName;
-        public string type;
+        public DataType type;
         public int referenceTable;
     }
 
@@ -31,7 +31,7 @@ namespace DolinskSportSchool
             t.fields = new List<Field>();
             tables.Add(t);
         }
-        public static void AddField(int ind, string name, string displayName, string type, int refereneTable)
+        public static void AddField(int ind, string name, string displayName, DataType type, int refereneTable)
         {
             Field f = new Field();
             f.name = name;
@@ -40,5 +40,7 @@ namespace DolinskSportSchool
             f.referenceTable = refereneTable;
             tables[ind].fields.Add(f);
         }
+
+        public const string DBName = @"C:\Users\Kelta\Desktop\Prj3\DolinskSportSchool\testdb\dss.db";
     }
 }
