@@ -88,10 +88,15 @@ namespace DolinskSportSchool
         
     }
 
+    class IntervalDateEdit
+    {
+
+    }
 
     class DropDownCheckList
     {
         private TextBox summary;
+        private Label title;
         private Control parent;
         private Panel selectionPanel;
         private Button acceptBtn;
@@ -103,20 +108,23 @@ namespace DolinskSportSchool
         }
         
 
-        public DropDownCheckList(Control parent, List<string> values, int x, int y)
+        public DropDownCheckList(Control parent, List<string> values, int x, int y, Label title)
         {
+            this.title = title;
+            this.title.Left = x;
+            this.title.Top = y;
             this.parent = parent;
             this.selections = new List<CheckBox>();
             this.selectionPanel = new Panel();
             this.selectionPanel.Parent = parent;
             this.summary = new TextBox();
             this.summary.Left = x;
-            this.summary.Top = y;
+            this.summary.Top = this.title.Top + this.title.Height + 10;
             this.summary.ReadOnly = true;
             this.summary.Parent = parent;
             this.summary.Width = 110;
             this.selectionPanel.Left = this.summary.Left;
-            this.selectionPanel.Top = this.summary.Top + 30;
+            this.selectionPanel.Top = this.summary.Top + this.summary.Height + 10;
             this.selectionPanel.BorderStyle = BorderStyle.FixedSingle;
             this.acceptBtn = new Button();
             int cbx = 0, cby = 5;
@@ -155,15 +163,18 @@ namespace DolinskSportSchool
             int res = this.summary.Left;
             this.parent.Controls.Remove(this.selectionPanel);
             this.parent.Controls.Remove(this.summary);
+            this.parent.Controls.Remove(this.title);
             return res;
         }
 
         public void setPosition(int x, int y)
         {
+            this.title.Left = x;
+            this.title.Top = y;
             this.summary.Left = x;
-            this.summary.Top = y;
+            this.summary.Top = this.title.Top + this.title.Height + 10;
             this.selectionPanel.Left = this.summary.Left;
-            this.selectionPanel.Top = this.summary.Top + 30;
+            this.selectionPanel.Top = this.summary.Top + this.summary.Height + 10;
         }
 
         private void onAcceptBtnClick(object sender, EventArgs e)
@@ -188,6 +199,7 @@ namespace DolinskSportSchool
     class Filter
     {
         private EditorType type;
+        private Label title;
         private TextBox text;
         private DropDownCheckList checkList;
         private FilterInfo info;
@@ -214,18 +226,23 @@ namespace DolinskSportSchool
         
         public Filter(Control parent, EditorType editorType, List<string> values, int x, int y, FilterInfo fi)
         {
+            this.title = new Label();
+            this.title.Text = MetaData.tables[fi.tableTag].fields[fi.fieldNum].displayName;
+            this.title.Parent = parent;
             this.type = editorType;
             this.info = fi;
             switch (this.type)
             {
                 case EditorType.DropDownCheckList:
-                    checkList = new DropDownCheckList(parent, values, x, y);
+                    checkList = new DropDownCheckList(parent, values, x, y, this.title);
                     break;
                 case EditorType.TextBox:
                     text = new TextBox();
                     text.Parent = parent;
+                    this.title.Left = x;
+                    this.title.Top = y;
                     text.Left = x;
-                    text.Top = y;
+                    text.Top = this.title.Top + this.title.Height + 10;
                     text.Width = 110;
                     break;
             }
@@ -239,6 +256,7 @@ namespace DolinskSportSchool
                     return this.checkList.destroy();
                 case EditorType.TextBox:
                     int res = this.text.Left;
+                    this.title.Parent.Controls.Remove(this.title);
                     this.text.Parent.Controls.Remove(this.text);
                     return res;
                 default:
@@ -251,11 +269,13 @@ namespace DolinskSportSchool
             switch (type)
             {
                 case EditorType.DropDownCheckList:
-                    checkList.setPosition(x, y);
+                    this.checkList.setPosition(x, y);
                     break;
                 case EditorType.TextBox:
-                    text.Left = x;
-                    text.Top = y;
+                    this.title.Left = x;
+                    this.title.Top = y;
+                    this.text.Left = x;
+                    this.text.Top = this.title.Top + this.title.Height + 10;
                     break;
             }
         }
