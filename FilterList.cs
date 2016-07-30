@@ -90,6 +90,82 @@ namespace DolinskSportSchool
 
     class IntervalDateEdit
     {
+        private Control parent;
+        private Label title;
+        private Label fromTitle;
+        private Label tillTitle;
+        private DateTimePicker from;
+        private DateTimePicker till;
+
+        public DateTimePicker From
+        {
+            get { return from; }
+        }
+
+        public DateTimePicker Till
+        {
+            get { return till; }
+        }
+
+        public IntervalDateEdit(Control parent, int x, int y, Label title)
+        {
+            this.parent = parent;
+            this.title = title;
+            this.from = new DateTimePicker();
+            this.till = new DateTimePicker();
+            this.fromTitle = new Label();
+            this.tillTitle = new Label();
+            this.title.Left = x;
+            this.title.Top = y;
+            this.title.Parent = parent;
+            this.from.Parent = parent;
+            this.till.Parent = parent;
+            this.fromTitle.Parent = parent;
+            this.tillTitle.Parent = parent;
+            this.fromTitle.Text = "От";
+            this.fromTitle.Left = x;
+            this.fromTitle.Top = this.title.Top + this.title.Height + 10;
+
+            this.from.Left = x;
+            this.from.Top = this.fromTitle.Top + this.fromTitle.Height + 10;
+            this.from.Width = 110;
+
+            this.tillTitle.Text = "До";
+            this.tillTitle.Left = x;
+            this.tillTitle.Top = this.from.Top + this.from.Height + 10;
+
+            this.till.Left = x;
+            this.till.Top = this.tillTitle.Top + this.tillTitle.Height + 10;
+            this.till.Width = 110;
+        }
+
+        public void Destroy()
+        {
+            this.parent.Controls.Remove(this.title);
+            this.parent.Controls.Remove(this.from);
+            this.parent.Controls.Remove(this.till);
+            this.parent.Controls.Remove(this.fromTitle);
+            this.parent.Controls.Remove(this.tillTitle);
+        }
+
+        public void SetPosition(int x, int y)
+        {
+            this.title.Left = x;
+            this.title.Top = y;
+            this.title.Parent = parent;
+
+            this.fromTitle.Left = x;
+            this.fromTitle.Top = this.title.Top + this.title.Height + 10;
+
+            this.from.Left = x;
+            this.from.Top = this.fromTitle.Top + this.fromTitle.Height + 10;
+
+            this.tillTitle.Left = x;
+            this.tillTitle.Top = this.from.Top + this.from.Height + 10;
+
+            this.till.Left = x;
+            this.till.Top = this.tillTitle.Top + this.tillTitle.Height + 10;
+        }
 
     }
 
@@ -127,7 +203,7 @@ namespace DolinskSportSchool
             this.selectionPanel.Top = this.summary.Top + this.summary.Height + 10;
             this.selectionPanel.BorderStyle = BorderStyle.FixedSingle;
             this.acceptBtn = new Button();
-            int cbx = 0, cby = 5;
+            int cbx = 2, cby = 5;
             for (int i = 0; i < values.Count; i++)
             {
                 CheckBox cb = new CheckBox();
@@ -158,7 +234,7 @@ namespace DolinskSportSchool
             this.selectionPanel.Show();
         }
 
-        public int destroy()
+        public int Destroy()
         {
             int res = this.summary.Left;
             this.parent.Controls.Remove(this.selectionPanel);
@@ -167,7 +243,7 @@ namespace DolinskSportSchool
             return res;
         }
 
-        public void setPosition(int x, int y)
+        public void SetPosition(int x, int y)
         {
             this.title.Left = x;
             this.title.Top = y;
@@ -202,6 +278,7 @@ namespace DolinskSportSchool
         private Label title;
         private TextBox text;
         private DropDownCheckList checkList;
+        private IntervalDateEdit date;
         private FilterInfo info;
 
         public EditorType Type
@@ -219,6 +296,11 @@ namespace DolinskSportSchool
             get { return checkList; }
         }
 
+        public IntervalDateEdit Date
+        {
+            get { return date; }
+        }
+
         public FilterInfo Info
         {
             get { return info; }
@@ -229,6 +311,8 @@ namespace DolinskSportSchool
             this.title = new Label();
             this.title.Text = MetaData.tables[fi.tableTag].fields[fi.fieldNum].displayName;
             this.title.Parent = parent;
+            this.title.Left = x;
+            this.title.Top = y;
             this.type = editorType;
             this.info = fi;
             switch (this.type)
@@ -239,43 +323,51 @@ namespace DolinskSportSchool
                 case EditorType.TextBox:
                     text = new TextBox();
                     text.Parent = parent;
-                    this.title.Left = x;
-                    this.title.Top = y;
                     text.Left = x;
                     text.Top = this.title.Top + this.title.Height + 10;
                     text.Width = 110;
                     break;
+                case EditorType.Date:
+                    this.date = new IntervalDateEdit(parent, x, y, title);
+                    break;
             }
         }
 
-        public int destroy()
+        public int Destroy()
         {
             switch (type)
             {
                 case EditorType.DropDownCheckList:
-                    return this.checkList.destroy();
+                    return this.checkList.Destroy();
                 case EditorType.TextBox:
                     int res = this.text.Left;
                     this.title.Parent.Controls.Remove(this.title);
                     this.text.Parent.Controls.Remove(this.text);
                     return res;
+                case EditorType.Date:
+                    this.date.Destroy();
+                    return 0;
+                    break;
                 default:
                     return 0;
             }
         }
 
-        public void setPosition(int x, int y)
+        public void SetPosition(int x, int y)
         {
             switch (type)
             {
                 case EditorType.DropDownCheckList:
-                    this.checkList.setPosition(x, y);
+                    this.checkList.SetPosition(x, y);
                     break;
                 case EditorType.TextBox:
                     this.title.Left = x;
                     this.title.Top = y;
                     this.text.Left = x;
                     this.text.Top = this.title.Top + this.title.Height + 10;
+                    break;
+                case EditorType.Date:
+                    this.date.SetPosition(x, y);
                     break;
             }
         }
@@ -319,11 +411,11 @@ namespace DolinskSportSchool
                 {
                     if (filters[i] != null && filters[i].Info == fi)
                     {                         
-                        left = filters[i].destroy();
+                        left = filters[i].Destroy();
                         filters.Remove(filters[i]);
                         for (int j = i; j < filters.Count; j++)
                         {
-                            filters[j].setPosition(j * 120 + 5, 10);
+                            filters[j].SetPosition(j * 120 + 5, 10);
                         }
                         break;
                     }

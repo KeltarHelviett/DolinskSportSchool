@@ -9,9 +9,9 @@ namespace DolinskSportSchool
     enum DataType
     {
         String = 0,
-        Date,
-        Integer,
-        Float
+        Date = 2,
+        Integer = 1,
+        Float = 3
     }
 
     struct ParameterInfo
@@ -72,20 +72,43 @@ namespace DolinskSportSchool
                     case EditorType.TextBox:
                         tmp[0] = lf[i].Text.Text.Trim();
                         break;
+                    case EditorType.Date:
+                        tmp = new string[2];
+                        tmp[0] = lf[i].Date.From.Text;
+                        tmp[1] = lf[i].Date.Till.Text;
+                        
+                        break;
                 }
                 res += " ( ";
                 string tname = MetaData.tables[lf[i].Info.tableTag].name;
                 string fname = MetaData.tables[lf[i].Info.tableTag].fields[lf[i].Info.fieldNum].name;
-                for (int j = 0; j < tmp.Count(); j++)
+                if (lf[i].Type != EditorType.Date)
                 {
-                    ParameterInfo pi = new ParameterInfo();
-                    pi.type = MetaData.tables[lf[i].Info.tableTag].fields[lf[i].Info.fieldNum].type;
-                    pi.value = tmp[j];
-                    pi.id = "@" + tname + fname + rnd.Next().ToString() + rnd.Next().ToString();
-                    parameters.Add(pi);
-                    res += tname + "." + fname + " = " + "\"" + pi.value + "\"" + " OR "; //@[TableName][FieldName][randomint]
+                    for (int j = 0; j < tmp.Count(); j++)
+                    {
+                        ParameterInfo pi = new ParameterInfo();
+                        pi.type = MetaData.tables[lf[i].Info.tableTag].fields[lf[i].Info.fieldNum].type;
+                        pi.value = tmp[j];
+                        pi.id = "@" + tname + fname + rnd.Next().ToString() + rnd.Next().ToString();
+                        parameters.Add(pi);
+                        res += tname + "." + fname + " = " + pi.id + " OR "; //@[TableName][FieldName][randomint]
+                    }
+                    res = res.Remove(res.Length - 3, 3);
                 }
-                res = res.Remove(res.Length - 3, 3);
+                else
+                {
+                    for (int j = 0; j < tmp.Count(); j++)
+                    {
+                        ParameterInfo pi = new ParameterInfo();
+                        pi.type = MetaData.tables[lf[i].Info.tableTag].fields[lf[i].Info.fieldNum].type;
+                        pi.value = tmp[j];
+                        pi.id = "@" + tname + fname + rnd.Next().ToString() + rnd.Next().ToString();
+                        parameters.Add(pi);
+                        string sign = j % 2 == 0 ? " >= " : " <= ";
+                        res += "date(" + tname + "." + fname + ")" + sign + "date(" + pi.id +")"+ " AND "; //@[TableName][FieldName][randomint]
+                    }
+                    res = res.Remove(res.Length - 4, 4);
+                }
                 res += " ) AND ";
             }
             if (res.Length - 4 > 0)

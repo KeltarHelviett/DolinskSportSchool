@@ -23,12 +23,12 @@ namespace DolinskSportSchool
             InitializeComponent();
             this.Tag = tag;
             this.Text = MetaData.tables[Convert.ToInt32(this.Tag)].displayName;
-            fillDBGrid();
-            adjustColNames();
-            createFilters();
+            FillDBGrid();
+            AdjustColNames();
+            CreateFilters();
 
         }
-        private void fillDBGrid()
+        private void FillDBGrid()
         { 
             SQLiteConnection connection =
                 new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
@@ -43,7 +43,7 @@ namespace DolinskSportSchool
             connection.Close();
         }
 
-        private void adjustColNames()
+        private void AdjustColNames()
         {
             for (int i = 0; i < DBGrid.ColumnCount; i++)
             {
@@ -51,14 +51,22 @@ namespace DolinskSportSchool
             }
         }
 
-        private void createFilters()
+        private void CreateFilters()
         {
             int tg = (int)this.Tag;
             List<List<string>> l = new List<List<string>>();
             for (int i = 1; i < MetaData.tables[tg].fields.Count; i++)
             {
                 List<string> ls = new List<string>();
-                if (MetaData.tables[tg].fields[i].referenceTable != -1)
+                if (MetaData.tables[tg].fields[i].type == DataType.Date)
+                {
+                    ls.Add(MetaData.tables[tg].fields[i].displayName);
+                    ls.Add(Convert.ToString(tg));
+                    ls.Add(Convert.ToString(i));
+                    ls.Add("2");
+                    l.Add(ls);
+                }
+                else if (MetaData.tables[tg].fields[i].referenceTable != -1)
                 {
                     int rt = MetaData.tables[tg].fields[i].referenceTable;
                     for (int j = 1; j < MetaData.tables[rt].fields.Count; j++)
@@ -103,6 +111,11 @@ namespace DolinskSportSchool
                         break;
                     case DataType.Integer:
                         command.Parameters.AddWithValue(prms[i].id, Convert.ToInt32(prms[i].value));
+                        break;
+                    case DataType.Date:
+                        SQLiteParameter strParam = new SQLiteParameter(prms[i].id, DbType.String, 100);
+                        strParam.Value = Convert.ToDateTime(prms[i].value).ToString("yyyy-MM-dd");
+                        command.Parameters.Add(strParam);
                         break;
                 }
             }
