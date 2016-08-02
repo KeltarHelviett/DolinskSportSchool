@@ -11,7 +11,9 @@ namespace DolinskSportSchool
     {
         DropDownCheckList = 0,
         TextBox = 1,
-        Date = 2
+        DateInterval = 2,
+        Date = 3,
+        ComboBox = 4
     }
 
     class IntervalDateEdit

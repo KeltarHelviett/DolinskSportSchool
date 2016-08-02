@@ -54,7 +54,7 @@ namespace DolinskSportSchool
 
         static public string BuildFiltersWherePart(FilterList ft, out List<ParameterInfo> parameters)
         {
-            List<Filter> lf = ft.getFilters();
+            List<Filter> lf = ft.GetFilters();
             string res = "";
             Random rnd = new Random();
             parameters = new List<ParameterInfo>();
@@ -72,7 +72,7 @@ namespace DolinskSportSchool
                     case EditorType.TextBox:
                         tmp[0] = lf[i].Text.Text.Trim();
                         break;
-                    case EditorType.Date:
+                    case EditorType.DateInterval:
                         tmp = new string[2];
                         tmp[0] = lf[i].Date.From.Text;
                         tmp[1] = lf[i].Date.Till.Text;
@@ -82,7 +82,7 @@ namespace DolinskSportSchool
                 res += " ( ";
                 string tname = MetaData.tables[lf[i].Info.tableTag].name;
                 string fname = MetaData.tables[lf[i].Info.tableTag].fields[lf[i].Info.fieldNum].name;
-                if (lf[i].Type != EditorType.Date)
+                if (lf[i].Type != EditorType.DateInterval)
                 {
                     for (int j = 0; j < tmp.Count(); j++)
                     {

@@ -138,7 +138,7 @@ namespace DolinskSportSchool
                     text.Top = this.title.Top + this.title.Height + 10;
                     text.Width = 110;
                     break;
-                case EditorType.Date:
+                case EditorType.DateInterval:
                     this.date = new IntervalDateEdit(parent, x, y, title);
                     break;
             }
@@ -155,10 +155,9 @@ namespace DolinskSportSchool
                     this.title.Parent.Controls.Remove(this.title);
                     this.text.Parent.Controls.Remove(this.text);
                     return res;
-                case EditorType.Date:
+                case EditorType.DateInterval:
                     this.date.Destroy();
                     return 0;
-                    break;
                 default:
                     return 0;
             }
@@ -177,7 +176,7 @@ namespace DolinskSportSchool
                     this.text.Left = x;
                     this.text.Top = this.title.Top + this.title.Height + 10;
                     break;
-                case EditorType.Date:
+                case EditorType.DateInterval:
                     this.date.SetPosition(x, y);
                     break;
             }
@@ -243,7 +242,7 @@ namespace DolinskSportSchool
             this.selection = new FilterSelection(filterSelectonParent, filterInfo, new EventHandler(onSelectionCheck));
         }
 
-        public List<Filter> getFilters()
+        public List<Filter> GetFilters()
         {
             return this.filters;
         }

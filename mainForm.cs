@@ -56,13 +56,7 @@ namespace DolinskSportSchool
         {
          
         }
-  
-        private void button1_Click(object sender, EventArgs e)
-        {
-            TextBox tb = new TextBox();
-            tb.Left = 50;
-            tb.Top = 50;
-            this.Controls.Add(tb);
-        }
+
+       
     }
 }

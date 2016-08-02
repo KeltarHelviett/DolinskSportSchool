@@ -126,5 +126,12 @@ namespace DolinskSportSchool
             DBGrid.DataSource = dt;
             connection.Close();
         }
+
+        private void AddBtn_Click(object sender, EventArgs e)
+        {
+            Card f = new Card(-1, (int)this.Tag);
+            f.Text = "Добавление";
+            f.Show();
+        }
     }
 }

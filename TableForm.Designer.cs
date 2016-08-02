@@ -30,10 +30,13 @@
         {
             this.DBGrid = new System.Windows.Forms.DataGridView();
             this.SelectionFilter = new System.Windows.Forms.Panel();
-            this.FilterPanel = new System.Windows.Forms.Panel();
             this.AcceptBtn = new System.Windows.Forms.Button();
+            this.FilterPanel = new System.Windows.Forms.Panel();
+            this.ModifyPanel = new System.Windows.Forms.Panel();
+            this.AddBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
             this.SelectionFilter.SuspendLayout();
+            this.ModifyPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // DBGrid
@@ -47,29 +50,18 @@
             this.DBGrid.Location = new System.Drawing.Point(-1, -4);
             this.DBGrid.Name = "DBGrid";
             this.DBGrid.ReadOnly = true;
-            this.DBGrid.Size = new System.Drawing.Size(1196, 287);
+            this.DBGrid.Size = new System.Drawing.Size(1349, 287);
             this.DBGrid.TabIndex = 0;
             // 
             // SelectionFilter
             // 
-            this.SelectionFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.SelectionFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.SelectionFilter.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.SelectionFilter.Controls.Add(this.AcceptBtn);
-            this.SelectionFilter.Location = new System.Drawing.Point(-1, 410);
+            this.SelectionFilter.Location = new System.Drawing.Point(-1, 538);
             this.SelectionFilter.Name = "SelectionFilter";
-            this.SelectionFilter.Size = new System.Drawing.Size(113, 256);
+            this.SelectionFilter.Size = new System.Drawing.Size(113, 252);
             this.SelectionFilter.TabIndex = 1;
-            // 
-            // FilterPanel
-            // 
-            this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.FilterPanel.Location = new System.Drawing.Point(118, 414);
-            this.FilterPanel.Name = "FilterPanel";
-            this.FilterPanel.Size = new System.Drawing.Size(1077, 252);
-            this.FilterPanel.TabIndex = 2;
             // 
             // AcceptBtn
             // 
@@ -81,11 +73,41 @@
             this.AcceptBtn.UseVisualStyleBackColor = true;
             this.AcceptBtn.Click += new System.EventHandler(this.AcceptBtn_Click);
             // 
+            // FilterPanel
+            // 
+            this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.FilterPanel.Location = new System.Drawing.Point(118, 538);
+            this.FilterPanel.Name = "FilterPanel";
+            this.FilterPanel.Size = new System.Drawing.Size(1230, 252);
+            this.FilterPanel.TabIndex = 2;
+            // 
+            // ModifyPanel
+            // 
+            this.ModifyPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ModifyPanel.Controls.Add(this.AddBtn);
+            this.ModifyPanel.Location = new System.Drawing.Point(4, 289);
+            this.ModifyPanel.Name = "ModifyPanel";
+            this.ModifyPanel.Size = new System.Drawing.Size(108, 243);
+            this.ModifyPanel.TabIndex = 3;
+            // 
+            // AddBtn
+            // 
+            this.AddBtn.Location = new System.Drawing.Point(6, 19);
+            this.AddBtn.Name = "AddBtn";
+            this.AddBtn.Size = new System.Drawing.Size(95, 34);
+            this.AddBtn.TabIndex = 0;
+            this.AddBtn.Text = "Добавить запись";
+            this.AddBtn.UseVisualStyleBackColor = true;
+            this.AddBtn.Click += new System.EventHandler(this.AddBtn_Click);
+            // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1195, 670);
+            this.ClientSize = new System.Drawing.Size(1348, 794);
+            this.Controls.Add(this.ModifyPanel);
             this.Controls.Add(this.FilterPanel);
             this.Controls.Add(this.SelectionFilter);
             this.Controls.Add(this.DBGrid);
@@ -93,6 +115,7 @@
             this.Text = "TableForm";
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).EndInit();
             this.SelectionFilter.ResumeLayout(false);
+            this.ModifyPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -103,5 +126,7 @@
         private System.Windows.Forms.Panel SelectionFilter;
         private System.Windows.Forms.Panel FilterPanel;
         private System.Windows.Forms.Button AcceptBtn;
+        private System.Windows.Forms.Panel ModifyPanel;
+        private System.Windows.Forms.Button AddBtn;
     }
 }
