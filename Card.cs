@@ -62,12 +62,13 @@ namespace DolinskSportSchool
             this.Tag = tableTag;
             InitializeComponent();
             this.cardId = id;
+            CreateCard();
             switch (id)
             {
                 case -1:
-                    CreateAddCard();
                     break;
                 default:
+                    FillCard();
                     break;
             }
         }
@@ -117,7 +118,43 @@ namespace DolinskSportSchool
             return e;
         }
 
-        public void CreateAddCard()
+        private void FillCard()
+        {
+            SQLiteConnection connection = new SQLiteConnection(string.Format("Data source = {0}", MetaData.DBName));
+            connection.Open();
+            SQLiteCommand command = new SQLiteCommand(
+                SQLBuilder.BuildSelectPart((int)Tag) + " WHERE " + MetaData.tables[(int)Tag].name + ".ID = " + cardId.ToString(), connection);
+            SQLiteDataReader reader = command.ExecuteReader();
+            reader.Read();
+            for (int i = 0; i < editors.Count; i++)
+            {
+                switch (editors[i].et)
+                {
+                    case EditorType.TextBox:
+                        (editors[i].c as TextBox).Text = reader.GetString(i);
+                        break;
+                    case EditorType.Date:
+                        (editors[i].c as DateTimePicker).Value = reader.GetDateTime(i);
+                        break;
+                    case EditorType.ComboBox:
+                        ComboBox cb = editors[i].c as ComboBox;
+                        string s = reader.GetString(i);
+                        for (int j = 0; j < cb.Items.Count; j++)
+                        {
+                            ComboBoxItem cbi = cb.Items[j] as ComboBoxItem;
+                            if (cbi.Value == s)
+                            {
+                                cb.SelectedIndex = j;
+                                break;
+                            }
+                        }
+                        break;
+                }
+            }
+            connection.Close();
+        }
+
+        private void CreateCard()
         {
             int tg = (int)this.Tag;
             int x = 10, y = 20;
@@ -174,24 +211,10 @@ namespace DolinskSportSchool
             prms = new List<string>();
             for (int i = 0; i < MetaData.tables[(int)Tag].fields.Count; i++)
             {
-                if (t.fields[i].referenceTable == -1)
-                {
                     if (t.fields[i].displayName == "")//@[TableName][FieldName][randomint]
                         continue;
                     prms.Add("@" + t.name + t.fields[i].name + (count++).ToString());
                     res += prms[prms.Count - 1] + ", ";
-                }
-                else
-                {
-                    Table rt = MetaData.tables[t.fields[i].referenceTable];
-                    for (int j = 0; j < rt.fields.Count; j++)
-                    {
-                        if (rt.fields[j].displayName == "")
-                            continue;
-                        prms.Add("@" + rt.name + rt.fields[j].name + (count++).ToString());
-                        res += prms[prms.Count - 1] + ", ";
-                    }
-                }
             }
             res = res.Remove(res.Length - 2, 2);
             res += ");";
@@ -224,6 +247,55 @@ namespace DolinskSportSchool
                 }
             }
             command.ExecuteNonQuery();
+            connection.Close();
+            this.Close();
+        }
+
+        private string CreateUpdateString(out List<string>prms)
+        {
+            string res = string.Format("UPDATE {0} SET ", MetaData.tables[(int)Tag].name);
+            Table t = MetaData.tables[(int)Tag];
+            int count = 0;
+            prms = new List<string>();
+            for (int i = 0; i < t.fields.Count; i++)
+            {
+                if (t.fields[i].displayName == "")
+                    continue;
+                prms.Add("@" + t.name + t.fields[i].name + (count++).ToString());
+                res += t.fields[i].name + " = " + prms[prms.Count - 1] + ", ";
+            }
+            res = res.Remove(res.Length - 2, 2);
+            res += " WHERE ID = " + this.cardId.ToString() ;
+            return res;
+        }
+
+        private void EditRecord()
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            SQLiteConnection connection = new SQLiteConnection(string.Format("Data source = {0}", MetaData.DBName));
+            connection.Open();
+            List<string> prms;
+            command.Connection = connection;
+            command.CommandText = CreateUpdateString(out prms);
+            command.Prepare();
+
+            for (int i = 0; i < editors.Count; i++)
+            {
+                switch (editors[i].et)
+                {
+                    case EditorType.TextBox:
+                        command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text);
+                        break;
+                    case EditorType.Date:
+                        command.Parameters.AddWithValue(prms[i], (editors[i].c as DateTimePicker).Value.ToString("yyyy-MM-dd"));
+                        break;
+                    case EditorType.ComboBox:
+                        command.Parameters.AddWithValue(prms[i], Convert.ToString(((editors[i].c as ComboBox).SelectedItem as ComboBoxItem).ID));
+                        break;
+                }
+            }
+            command.ExecuteNonQuery();
+            connection.Close();
             this.Close();
         }
 
@@ -232,7 +304,7 @@ namespace DolinskSportSchool
             if (cardId == -1)
                 AddNewRecord();
             else
-                return;
+                EditRecord();
             
         }
 

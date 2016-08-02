@@ -33,6 +33,7 @@
             this.AcceptBtn = new System.Windows.Forms.Button();
             this.FilterPanel = new System.Windows.Forms.Panel();
             this.ModifyPanel = new System.Windows.Forms.Panel();
+            this.EditBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
             this.SelectionFilter.SuspendLayout();
@@ -50,6 +51,7 @@
             this.DBGrid.Location = new System.Drawing.Point(-1, -4);
             this.DBGrid.Name = "DBGrid";
             this.DBGrid.ReadOnly = true;
+            this.DBGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DBGrid.Size = new System.Drawing.Size(1349, 287);
             this.DBGrid.TabIndex = 0;
             // 
@@ -86,11 +88,22 @@
             // ModifyPanel
             // 
             this.ModifyPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ModifyPanel.Controls.Add(this.EditBtn);
             this.ModifyPanel.Controls.Add(this.AddBtn);
             this.ModifyPanel.Location = new System.Drawing.Point(4, 289);
             this.ModifyPanel.Name = "ModifyPanel";
             this.ModifyPanel.Size = new System.Drawing.Size(108, 243);
             this.ModifyPanel.TabIndex = 3;
+            // 
+            // EditBtn
+            // 
+            this.EditBtn.Location = new System.Drawing.Point(6, 59);
+            this.EditBtn.Name = "EditBtn";
+            this.EditBtn.Size = new System.Drawing.Size(95, 34);
+            this.EditBtn.TabIndex = 1;
+            this.EditBtn.Text = "Редактировать";
+            this.EditBtn.UseVisualStyleBackColor = true;
+            this.EditBtn.Click += new System.EventHandler(this.EditBtn_Click);
             // 
             // AddBtn
             // 
@@ -128,5 +141,6 @@
         private System.Windows.Forms.Button AcceptBtn;
         private System.Windows.Forms.Panel ModifyPanel;
         private System.Windows.Forms.Button AddBtn;
+        private System.Windows.Forms.Button EditBtn;
     }
 }

@@ -34,12 +34,14 @@ namespace DolinskSportSchool
                 new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
             connection.Open();
             int tg = Convert.ToInt32(this.Tag);
-            SQLiteCommand command = new SQLiteCommand(SQLBuilder.BuildSelectPart(tg), connection);
+            SQLiteCommand command = new SQLiteCommand(
+                SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), connection);
             SQLiteDataAdapter da = new SQLiteDataAdapter(command);
             DataTable dt = new DataTable();
             da.Fill(dt);
             DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
+            DBGrid.Columns[0].Visible = false;
             connection.Close();
         }
 
@@ -47,7 +49,7 @@ namespace DolinskSportSchool
         {
             for (int i = 0; i < DBGrid.ColumnCount; i++)
             {
-                DBGrid.Columns[i].HeaderText = MetaData.tables[Convert.ToInt32(this.Tag)].fields[i + 1].displayName;
+                DBGrid.Columns[i].HeaderText = MetaData.tables[Convert.ToInt32(this.Tag)].fields[i].displayName;
             }
         }
 
@@ -99,7 +101,7 @@ namespace DolinskSportSchool
             int tg = Convert.ToInt32(this.Tag);
             List<ParameterInfo> prms;
             SQLiteCommand command = new SQLiteCommand(
-                string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg), SQLBuilder.BuildFiltersWherePart(Flist, out prms)), connection);
+                string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), SQLBuilder.BuildFiltersWherePart(Flist, out prms)), connection);
             File.WriteAllText(@"C:\Users\Kelta\Desktop\sqltest.txt", command.CommandText);
             command.Prepare();
             for (int i = 0; i < prms.Count; i++)
@@ -124,6 +126,7 @@ namespace DolinskSportSchool
             da.Fill(dt);
             //DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
+            DBGrid.Columns[0].Visible = false;
             connection.Close();
         }
 
@@ -131,6 +134,13 @@ namespace DolinskSportSchool
         {
             Card f = new Card(-1, (int)this.Tag);
             f.Text = "Добавление";
+            f.Show();
+        }
+
+        private void EditBtn_Click(object sender, EventArgs e)
+        {
+            Card f = new Card(Convert.ToInt32(DBGrid.SelectedCells[0].Value), (int)Tag);
+            f.Text = "Редактирование";
             f.Show();
         }
     }
