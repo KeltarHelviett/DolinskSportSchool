@@ -35,6 +35,7 @@
             this.ModifyPanel = new System.Windows.Forms.Panel();
             this.EditBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
+            this.DeleteBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
             this.SelectionFilter.SuspendLayout();
             this.ModifyPanel.SuspendLayout();
@@ -88,6 +89,7 @@
             // ModifyPanel
             // 
             this.ModifyPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ModifyPanel.Controls.Add(this.DeleteBtn);
             this.ModifyPanel.Controls.Add(this.EditBtn);
             this.ModifyPanel.Controls.Add(this.AddBtn);
             this.ModifyPanel.Location = new System.Drawing.Point(4, 289);
@@ -114,6 +116,16 @@
             this.AddBtn.Text = "Добавить запись";
             this.AddBtn.UseVisualStyleBackColor = true;
             this.AddBtn.Click += new System.EventHandler(this.AddBtn_Click);
+            // 
+            // DeleteBtn
+            // 
+            this.DeleteBtn.Location = new System.Drawing.Point(6, 99);
+            this.DeleteBtn.Name = "DeleteBtn";
+            this.DeleteBtn.Size = new System.Drawing.Size(95, 34);
+            this.DeleteBtn.TabIndex = 2;
+            this.DeleteBtn.Text = "Удалить";
+            this.DeleteBtn.UseVisualStyleBackColor = true;
+            this.DeleteBtn.Click += new System.EventHandler(this.DeleteBtn_Click);
             // 
             // TableForm
             // 
@@ -142,5 +154,6 @@
         private System.Windows.Forms.Panel ModifyPanel;
         private System.Windows.Forms.Button AddBtn;
         private System.Windows.Forms.Button EditBtn;
+        private System.Windows.Forms.Button DeleteBtn;
     }
 }

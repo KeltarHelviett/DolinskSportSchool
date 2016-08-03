@@ -39,7 +39,7 @@ namespace DolinskSportSchool
             SQLiteDataAdapter da = new SQLiteDataAdapter(command);
             DataTable dt = new DataTable();
             da.Fill(dt);
-            DBGrid.Font = new Font("Arial Unicode MS", 10);
+            DBGrid.Font = new Font("Time New Roman", 14);
             DBGrid.DataSource = dt;
             DBGrid.Columns[0].Visible = false;
             connection.Close();
@@ -142,6 +142,22 @@ namespace DolinskSportSchool
             Card f = new Card(Convert.ToInt32(DBGrid.SelectedCells[0].Value), (int)Tag);
             f.Text = "Редактирование";
             f.Show();
+        }
+
+        private void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show(
+                "Удалить запись?", "Удалить запись?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                SQLiteConnection connection =
+                new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
+                connection.Open();
+                SQLiteCommand command = new SQLiteCommand();
+                string id = Convert.ToString(DBGrid.SelectedCells[0].Value);
+                command.CommandText = "DELETE FROM " + MetaData.tables[(int)Tag].name + " WHERE ID = " + id;
+                command.Connection = connection;
+                command.ExecuteNonQuery();
+            }
         }
     }
 }
