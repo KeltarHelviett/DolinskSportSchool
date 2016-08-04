@@ -57,6 +57,7 @@ namespace DolinskSportSchool
             this.box.RightToLeft = RightToLeft.Yes;
             this.box.CheckedChanged += onCheck;
             this.box.Tag = info;
+            this.box.Font = new System.Drawing.Font("Times New Roman", 11);
         }       
     }
     class FilterSelection
@@ -124,6 +125,7 @@ namespace DolinskSportSchool
             this.title.Parent = parent;
             this.title.Left = x;
             this.title.Top = y;
+            this.title.Font = new System.Drawing.Font("Times New Roman", 11);
             this.type = editorType;
             this.info = fi;
             switch (this.type)
@@ -136,7 +138,8 @@ namespace DolinskSportSchool
                     text.Parent = parent;
                     text.Left = x;
                     text.Top = this.title.Top + this.title.Height + 10;
-                    text.Width = 110;
+                    text.Width = 115;
+                    text.Font = new System.Drawing.Font("Times New Roman", 11);
                     break;
                 case EditorType.DateInterval:
                     this.date = new IntervalDateEdit(parent, x, y, title);

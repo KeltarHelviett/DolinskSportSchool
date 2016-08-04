@@ -17,6 +17,7 @@ namespace DolinskSportSchool
     public partial class TableForm : Form
     {
         private FilterList Flist;
+        private TableEdit TEdit;
 
         public TableForm(int tag)
         {
@@ -26,6 +27,7 @@ namespace DolinskSportSchool
             FillDBGrid();
             AdjustColNames();
             CreateFilters();
+            CreateTableEdit();
 
         }
         private void FillDBGrid()
@@ -51,6 +53,28 @@ namespace DolinskSportSchool
             {
                 DBGrid.Columns[i].HeaderText = MetaData.tables[Convert.ToInt32(this.Tag)].fields[i].displayName;
             }
+        }
+
+        private void CreateTableEdit()
+        {
+            List<List<string>> values = new List<List<string>>();
+            int realColCount = DBGrid.Columns.Count;
+            int displayIndex = 1;
+            for (int i = 0; i < DBGrid.Columns.Count; i++)
+            {
+                if (!DBGrid.Columns[i].Visible)
+                {
+                    --realColCount;
+                    continue;
+                }
+
+                List<string> ls = new List<string>();
+                ls.Add(DBGrid.Columns[i].HeaderText);
+                ls.Add(i.ToString());
+                ls.Add(Convert.ToString(displayIndex++));
+                values.Add(ls);
+            }
+            TEdit = new TableEdit(ColumnViewPanel, values, realColCount, DBGrid);
         }
 
         private void CreateFilters()
@@ -104,6 +128,11 @@ namespace DolinskSportSchool
                 string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), SQLBuilder.BuildFiltersWherePart(Flist, out prms)), connection);
             File.WriteAllText(@"C:\Users\Kelta\Desktop\sqltest.txt", command.CommandText);
             command.Prepare();
+            if (prms.Count == 0)
+            {
+                connection.Close();
+                return;
+            }
             for (int i = 0; i < prms.Count; i++)
             {
                 switch (prms[i].type)

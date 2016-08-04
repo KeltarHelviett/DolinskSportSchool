@@ -13,7 +13,107 @@ namespace DolinskSportSchool
         TextBox = 1,
         DateInterval = 2,
         Date = 3,
-        ComboBox = 4
+        ComboBox = 4,
+        ColumnEdit = 5
+    }
+
+    class ColumnEditor
+    {
+        private Control parent;
+        private TableEdit td;
+        private CheckBox showColumnBox;
+        private NumericUpDown diplayIndex;
+        private int colIndex;
+
+        public int ColIndex
+        {
+            get { return colIndex; }
+            set { colIndex = value; }
+        }
+
+        public CheckBox ShowColumnBox
+        {
+            get { return showColumnBox; }
+        }
+
+        public NumericUpDown DisplayIndex
+        {
+            get { return diplayIndex; }
+        }
+
+        public ColumnEditor(Control parent, int max, string colName, int colIndex, int displayIndex, int x, int y, TableEdit td)
+        {
+            this.td = td;
+            this.parent = parent;
+            this.showColumnBox = new CheckBox();
+            this.showColumnBox.Parent = parent;
+            this.showColumnBox.Left = x;
+            this.showColumnBox.Top = y;
+            this.showColumnBox.Text = colName;
+            this.showColumnBox.Checked = true;
+            this.showColumnBox.Show();
+
+            this.diplayIndex = new NumericUpDown();
+            this.diplayIndex.Parent = this.parent;
+            this.diplayIndex.Minimum = 1;
+            this.diplayIndex.Maximum = max;
+            this.diplayIndex.Left = x;
+            this.diplayIndex.Top = this.showColumnBox.Bottom + 5;
+            this.diplayIndex.Width = 50;
+            this.diplayIndex.Show();
+
+            this.colIndex = colIndex;
+            this.diplayIndex.Value = displayIndex;
+
+            this.showColumnBox.CheckStateChanged += new EventHandler((sender, e) => 
+            {   if (!this.showColumnBox.Checked)
+                    this.diplayIndex.Hide();
+                else
+                    this.diplayIndex.Show();
+                this.td.Update();
+            });
+
+        }
+    }
+
+    class TableEdit
+    {
+        private Control parent;
+        private DataGridView DBGrid;
+        private List<ColumnEditor> columnEditors;
+
+        public TableEdit(Control parent, List<List<string>> values, int max, DataGridView dgv) // values = {ColName, ColIndex, DisplayIndex}
+        {
+            this.DBGrid = dgv;
+            this.columnEditors = new List<ColumnEditor>();
+            int x = 2, y = 5;
+            this.parent = parent;
+            for (int i = 0; i < values.Count; i++)
+            {
+                ColumnEditor ce = new ColumnEditor
+                    (this.parent, max, values[i][0], Convert.ToInt32(values[i][1]), Convert.ToInt32(values[i][2]), x, y, this);
+                this.columnEditors.Add(ce);
+                x += 100;
+            }
+        }
+        
+        public void Update()
+        {
+            for (int i = 0; i < columnEditors.Count; i++)
+            {
+                int ci = columnEditors[i].ColIndex;
+                int di = (int)columnEditors[i].DisplayIndex.Value;
+                if (columnEditors[i].ShowColumnBox.Checked)
+                {     
+                    DBGrid.Columns[ci].Visible = true;
+                    DBGrid.Columns[ci].DisplayIndex = di;
+                }
+                else
+                {
+                    DBGrid.Columns[ci].Visible = false;
+                }
+            }
+        }
     }
 
     class IntervalDateEdit
@@ -43,6 +143,8 @@ namespace DolinskSportSchool
             this.till = new DateTimePicker();
             this.fromTitle = new Label();
             this.tillTitle = new Label();
+            this.till.Font = new System.Drawing.Font("Times New Roman", 10);
+            this.from.Font = new System.Drawing.Font("Times New Roman", 10);
             this.title.Left = x;
             this.title.Top = y;
             this.title.Parent = parent;
@@ -56,7 +158,7 @@ namespace DolinskSportSchool
 
             this.from.Left = x;
             this.from.Top = this.fromTitle.Top + this.fromTitle.Height + 10;
-            this.from.Width = 110;
+            this.from.Width = 115;
 
             this.tillTitle.Text = "До";
             this.tillTitle.Left = x;
@@ -64,7 +166,7 @@ namespace DolinskSportSchool
 
             this.till.Left = x;
             this.till.Top = this.tillTitle.Top + this.tillTitle.Height + 10;
-            this.till.Width = 110;
+            this.till.Width = 115;
         }
 
         public void Destroy()
@@ -114,9 +216,11 @@ namespace DolinskSportSchool
 
         public DropDownCheckList(Control parent, List<string> values, int x, int y, Label title)
         {
+            System.Drawing.Font f = new System.Drawing.Font("Times New Roman", 10);
             this.title = title;
             this.title.Left = x;
             this.title.Top = y;
+            this.title.Font = f;
             this.parent = parent;
             this.selections = new List<CheckBox>();
             this.selectionPanel = new Panel();
@@ -126,7 +230,8 @@ namespace DolinskSportSchool
             this.summary.Top = this.title.Top + this.title.Height + 10;
             this.summary.ReadOnly = true;
             this.summary.Parent = parent;
-            this.summary.Width = 110;
+            this.summary.Width = 115;
+            this.summary.Font = f;
             this.selectionPanel.Left = this.summary.Left;
             this.selectionPanel.Top = this.summary.Top + this.summary.Height + 10;
             this.selectionPanel.BorderStyle = BorderStyle.FixedSingle;
@@ -137,10 +242,11 @@ namespace DolinskSportSchool
                 CheckBox cb = new CheckBox();
                 cb.Text = values[i];
                 cb.RightToLeft = RightToLeft.No;
-                cb.Width = 100;
+                //cb.Width = 100;
                 cb.Parent = this.selectionPanel;
                 cb.Left = cbx;
                 cb.Top = cby;
+                cb.Font = f;
                 cby += 20;
                 this.selections.Add(cb);
             }
@@ -151,6 +257,7 @@ namespace DolinskSportSchool
             this.acceptBtn.Height = 20;
             this.acceptBtn.Text = "OK";
             this.acceptBtn.Click += new EventHandler(onAcceptBtnClick);
+            this.acceptBtn.Font = f;
             this.acceptBtn.Show();
             this.selectionPanel.AutoScroll = true;
             this.selectionPanel.Height = 150;

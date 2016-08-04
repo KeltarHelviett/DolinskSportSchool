@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.EditorPanel = new System.Windows.Forms.Panel();
-            this.SaveBtn = new System.Windows.Forms.Button();
             this.CanceleBtn = new System.Windows.Forms.Button();
+            this.SaveBtn = new System.Windows.Forms.Button();
             this.EditorPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,18 +44,8 @@
             this.EditorPanel.Controls.Add(this.SaveBtn);
             this.EditorPanel.Location = new System.Drawing.Point(5, 3);
             this.EditorPanel.Name = "EditorPanel";
-            this.EditorPanel.Size = new System.Drawing.Size(1071, 237);
+            this.EditorPanel.Size = new System.Drawing.Size(1120, 237);
             this.EditorPanel.TabIndex = 0;
-            // 
-            // SaveBtn
-            // 
-            this.SaveBtn.Location = new System.Drawing.Point(323, 182);
-            this.SaveBtn.Name = "SaveBtn";
-            this.SaveBtn.Size = new System.Drawing.Size(102, 28);
-            this.SaveBtn.TabIndex = 0;
-            this.SaveBtn.Text = "Сохранить";
-            this.SaveBtn.UseVisualStyleBackColor = true;
-            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
             // 
             // CanceleBtn
             // 
@@ -67,11 +57,21 @@
             this.CanceleBtn.UseVisualStyleBackColor = true;
             this.CanceleBtn.Click += new System.EventHandler(this.CanceleBtn_Click);
             // 
+            // SaveBtn
+            // 
+            this.SaveBtn.Location = new System.Drawing.Point(323, 182);
+            this.SaveBtn.Name = "SaveBtn";
+            this.SaveBtn.Size = new System.Drawing.Size(102, 28);
+            this.SaveBtn.TabIndex = 0;
+            this.SaveBtn.Text = "Сохранить";
+            this.SaveBtn.UseVisualStyleBackColor = true;
+            this.SaveBtn.Click += new System.EventHandler(this.SaveBtn_Click);
+            // 
             // Card
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1077, 243);
+            this.ClientSize = new System.Drawing.Size(1126, 243);
             this.Controls.Add(this.EditorPanel);
             this.Name = "Card";
             this.Text = "Card";
