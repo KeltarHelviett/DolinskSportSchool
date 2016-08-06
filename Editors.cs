@@ -65,11 +65,23 @@ namespace DolinskSportSchool
             this.colIndex = colIndex;
             this.diplayIndex.Value = displayIndex;
 
+            this.diplayIndex.ValueChanged += new EventHandler((sender, e) => 
+            {
+                
+                this.td.Update(this);
+            });
+
             this.showColumnBox.CheckStateChanged += new EventHandler((sender, e) => 
             {   if (!this.showColumnBox.Checked)
+                {
                     this.diplayIndex.Hide();
+                    this.td.ChangeMax(-1);
+                }
                 else
+                {
+                    this.td.ChangeMax(1);
                     this.diplayIndex.Show();
+                }
                 this.td.Update();
             });
 
@@ -81,6 +93,7 @@ namespace DolinskSportSchool
         private Control parent;
         private DataGridView DBGrid;
         private List<ColumnEditor> columnEditors;
+        private int max;
 
         public TableEdit(Control parent, List<List<string>> values, int max, DataGridView dgv) // values = {ColName, ColIndex, DisplayIndex}
         {
@@ -88,17 +101,27 @@ namespace DolinskSportSchool
             this.columnEditors = new List<ColumnEditor>();
             int x = 2, y = 5;
             this.parent = parent;
+            this.max = max;
             for (int i = 0; i < values.Count; i++)
             {
                 ColumnEditor ce = new ColumnEditor
                     (this.parent, max, values[i][0], Convert.ToInt32(values[i][1]), Convert.ToInt32(values[i][2]), x, y, this);
                 this.columnEditors.Add(ce);
-                x += 100;
+                x += 110;
+                if ((i + 1) % 5 == 0)
+                {
+                    y += 55;
+                    x = 2;
+                }
             }
         }
-        
-        public void Update()
+
+        public void Update(ColumnEditor self = null)
         {
+            if (self != null)
+            {
+                swapValues(self);
+            }
             for (int i = 0; i < columnEditors.Count; i++)
             {
                 int ci = columnEditors[i].ColIndex;
@@ -112,6 +135,38 @@ namespace DolinskSportSchool
                 {
                     DBGrid.Columns[ci].Visible = false;
                 }
+            }
+        }
+
+        public void swapValues(ColumnEditor self)
+        {
+            foreach (ColumnEditor ce in this.columnEditors)
+            {
+                try
+                {
+                    if (ce != self && ce.DisplayIndex.Value == self.DisplayIndex.Value)
+                    {
+                        ce.DisplayIndex.Value = DBGrid.Columns[self.ColIndex].DisplayIndex;
+                        break;
+                    }
+                }
+                catch(Exception ex)
+                {
+
+                }
+                
+            }
+        }
+        public void ChangeMax(int delta)
+        {
+            this.max += delta;
+            for (int i = 0; i < this.columnEditors.Count; i++)
+            {
+                //if (this.columnEditors[i].DisplayIndex.Value >= this.max)
+                //{
+                //    this.columnEditors[i].DisplayIndex.Value--;
+                //}
+                columnEditors[i].DisplayIndex.Maximum = this.max;
             }
         }
     }
@@ -232,6 +287,7 @@ namespace DolinskSportSchool
             this.summary.Parent = parent;
             this.summary.Width = 115;
             this.summary.Font = f;
+            this.summary.Click += new EventHandler((sender, e) => { this.selectionPanel.Show(); });
             this.selectionPanel.Left = this.summary.Left;
             this.selectionPanel.Top = this.summary.Top + this.summary.Height + 10;
             this.selectionPanel.BorderStyle = BorderStyle.FixedSingle;
