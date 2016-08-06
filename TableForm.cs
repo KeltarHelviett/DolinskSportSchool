@@ -44,6 +44,29 @@ namespace DolinskSportSchool
             DBGrid.Font = new Font("Time New Roman", 14);
             DBGrid.DataSource = dt;
             DBGrid.Columns[0].Visible = false;
+            Table t = MetaData.tables[(int)Tag];
+            int curCol = 1;
+            for (int i = 1; i < t.fields.Count; i++)
+            {
+                if (t.fields[i].displayName == "")
+                    continue;
+                if (t.fields[i].referenceTable == -1)
+                {
+                    DBGrid.Columns[curCol].DefaultCellStyle.Alignment = t.fields[i].aligment;
+                    curCol++;
+                }
+                else
+                {
+                    Table tt = MetaData.tables[t.fields[i].referenceTable];
+                    for (int j = 0; j < tt.fields.Count; j++)
+                    {
+                        if (tt.fields[j].displayName == "")
+                            continue;
+                        DBGrid.Columns[curCol].DefaultCellStyle.Alignment = tt.fields[j].aligment;
+                        curCol++;
+                    }
+                }
+            }
             connection.Close();
         }
 
@@ -131,6 +154,7 @@ namespace DolinskSportSchool
             if (prms.Count == 0)
             {
                 connection.Close();
+                FillDBGrid();
                 return;
             }
             for (int i = 0; i < prms.Count; i++)
@@ -156,6 +180,7 @@ namespace DolinskSportSchool
             //DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
             DBGrid.Columns[0].Visible = false;
+            
             connection.Close();
         }
 
@@ -188,5 +213,7 @@ namespace DolinskSportSchool
                 command.ExecuteNonQuery();
             }
         }
+
+        
     }
 }

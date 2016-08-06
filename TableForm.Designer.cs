@@ -46,6 +46,7 @@
             // 
             this.DBGrid.AllowUserToAddRows = false;
             this.DBGrid.AllowUserToDeleteRows = false;
+            this.DBGrid.AllowUserToOrderColumns = true;
             this.DBGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DBGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
@@ -137,10 +138,11 @@
             // 
             // ColumnViewPanel
             // 
+            this.ColumnViewPanel.AutoScroll = true;
             this.ColumnViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ColumnViewPanel.Location = new System.Drawing.Point(387, 430);
+            this.ColumnViewPanel.Location = new System.Drawing.Point(387, 423);
             this.ColumnViewPanel.Name = "ColumnViewPanel";
-            this.ColumnViewPanel.Size = new System.Drawing.Size(755, 106);
+            this.ColumnViewPanel.Size = new System.Drawing.Size(566, 113);
             this.ColumnViewPanel.TabIndex = 4;
             // 
             // TableForm
