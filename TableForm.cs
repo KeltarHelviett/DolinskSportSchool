@@ -28,6 +28,7 @@ namespace DolinskSportSchool
             AdjustColNames();
             CreateFilters();
             CreateTableEdit();
+            Notifier.LookAfterTable(this);
 
         }
         private void FillDBGrid()
@@ -188,14 +189,12 @@ namespace DolinskSportSchool
         {
             Card f = new Card(-1, (int)this.Tag);
             f.Text = "Добавление";
-            f.Show();
         }
 
         private void EditBtn_Click(object sender, EventArgs e)
         {
             Card f = new Card(Convert.ToInt32(DBGrid.SelectedCells[0].Value), (int)Tag);
             f.Text = "Редактирование";
-            f.Show();
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)
@@ -211,9 +210,18 @@ namespace DolinskSportSchool
                 command.CommandText = "DELETE FROM " + MetaData.tables[(int)Tag].name + " WHERE ID = " + id;
                 command.Connection = connection;
                 command.ExecuteNonQuery();
+                Notifier.UpdateTables();
             }
         }
 
-        
+        public void UpdateTable()
+        {
+            AcceptBtn_Click(null, null);
+        }
+
+        private void CloseTable(object sender, FormClosingEventArgs e)
+        {
+            Notifier.DropTable(this);
+        }
     }
 }

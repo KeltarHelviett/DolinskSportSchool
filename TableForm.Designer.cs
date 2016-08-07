@@ -62,7 +62,7 @@
             // SelectionFilter
             // 
             this.SelectionFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.SelectionFilter.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.SelectionFilter.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.SelectionFilter.Controls.Add(this.AcceptBtn);
             this.SelectionFilter.Location = new System.Drawing.Point(-1, 538);
             this.SelectionFilter.Name = "SelectionFilter";
@@ -84,7 +84,7 @@
             // 
             this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.FilterPanel.Location = new System.Drawing.Point(139, 538);
             this.FilterPanel.Name = "FilterPanel";
             this.FilterPanel.Size = new System.Drawing.Size(1209, 252);
@@ -93,7 +93,6 @@
             // ModifyPanel
             // 
             this.ModifyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.ModifyPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.ModifyPanel.Controls.Add(this.DeleteBtn);
             this.ModifyPanel.Controls.Add(this.EditBtn);
             this.ModifyPanel.Controls.Add(this.AddBtn);
@@ -140,7 +139,7 @@
             // ColumnViewPanel
             // 
             this.ColumnViewPanel.AutoScroll = true;
-            this.ColumnViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ColumnViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ColumnViewPanel.Location = new System.Drawing.Point(387, 423);
             this.ColumnViewPanel.Name = "ColumnViewPanel";
             this.ColumnViewPanel.Size = new System.Drawing.Size(566, 113);
@@ -159,6 +158,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TableForm";
             this.Text = "TableForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseTable);
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).EndInit();
             this.SelectionFilter.ResumeLayout(false);
             this.ModifyPanel.ResumeLayout(false);

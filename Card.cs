@@ -24,6 +24,11 @@ namespace DolinskSportSchool
 
         private int cardId;
 
+        public int CardId
+        {
+            get { return cardId; }
+        }
+
         class ComboBoxItem
         {
             private int id;
@@ -71,6 +76,10 @@ namespace DolinskSportSchool
                     FillCard();
                     break;
             }
+            if (Notifier.CheckCardExistence(this.cardId, (int)this.Tag))
+                this.Close();
+            Notifier.LookAfterCard(this);
+            this.Show();
         }
 
         private void FillComboBox(ComboBox cb, int ttag, int ftag)
@@ -246,8 +255,17 @@ namespace DolinskSportSchool
                         break;
                 }
             }
-            command.ExecuteNonQuery();
-            connection.Close();
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка ввода");
+                connection.Close();
+                return;
+            }
+            
             this.Close();
         }
 
@@ -305,12 +323,18 @@ namespace DolinskSportSchool
                 AddNewRecord();
             else
                 EditRecord();
+            Notifier.UpdateTables();
             
         }
 
         private void CanceleBtn_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void CloseCard(object sender, FormClosingEventArgs e)
+        {
+            Notifier.DropCard(this);
         }
     }
 }

@@ -77,6 +77,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Card";
             this.Text = "Card";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseCard);
             this.EditorPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
