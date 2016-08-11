@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SQLite;
 
 namespace DolinskSportSchool
 {
@@ -23,7 +24,10 @@ namespace DolinskSportSchool
 
     static class SQLBuilder
     {
-       static public string BuildSelectPart(int tag)
+
+        static public SQLiteConnection Connection = new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
+
+        static public string BuildSelectPart(int tag)
         {
             string s = " SELECT ";
             string inners = " ";

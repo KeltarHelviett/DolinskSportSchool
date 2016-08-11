@@ -108,7 +108,7 @@ namespace DolinskSportSchool
                     (this.parent, max, values[i][0], Convert.ToInt32(values[i][1]), Convert.ToInt32(values[i][2]), x, y, this);
                 this.columnEditors.Add(ce);
                 x += 110;
-                if ((i + 1) % 5 == 0)
+                if ((i + 1) % 2 == 0)
                 {
                     y += 55;
                     x = 2;

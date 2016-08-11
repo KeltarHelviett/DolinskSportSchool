@@ -84,17 +84,16 @@ namespace DolinskSportSchool
 
         private void FillComboBox(ComboBox cb, int ttag, int ftag)
         {
-            SQLiteConnection connection = new SQLiteConnection(string.Format("Data source = {0}", MetaData.DBName));
-            connection.Open();
+            SQLBuilder.Connection.Open();
             SQLiteCommand command = new SQLiteCommand(
                 string.Format("SELECT id, {0} FROM {1}", MetaData.tables[ttag].fields[ftag].name, MetaData.tables[ttag].name));
-            command.Connection = connection;
+            command.Connection = SQLBuilder.Connection;
             SQLiteDataReader reader = command.ExecuteReader();
             foreach (DbDataRecord record in reader)
             {
                 cb.Items.Add(new ComboBoxItem(Convert.ToInt32(record[0]), record[1].ToString()));
             }
-            connection.Close();
+            SQLBuilder.Connection.Close();
         }
 
         private Editor CreateEditor(int x, int y, EditorType et, Control parent, int ttag, int ftag)
@@ -129,10 +128,9 @@ namespace DolinskSportSchool
 
         private void FillCard()
         {
-            SQLiteConnection connection = new SQLiteConnection(string.Format("Data source = {0}", MetaData.DBName));
-            connection.Open();
+            SQLBuilder.Connection.Open();
             SQLiteCommand command = new SQLiteCommand(
-                SQLBuilder.BuildSelectPart((int)Tag) + " WHERE " + MetaData.tables[(int)Tag].name + ".ID = " + cardId.ToString(), connection);
+                SQLBuilder.BuildSelectPart((int)Tag) + " WHERE " + MetaData.tables[(int)Tag].name + ".ID = " + cardId.ToString(), SQLBuilder.Connection);
             SQLiteDataReader reader = command.ExecuteReader();
             reader.Read();
             for (int i = 0; i < editors.Count; i++)
@@ -160,7 +158,7 @@ namespace DolinskSportSchool
                         break;
                 }
             }
-            connection.Close();
+            SQLBuilder.Connection.Close();
         }
 
         private void CreateCard()
@@ -232,10 +230,9 @@ namespace DolinskSportSchool
 
         private void AddNewRecord()
         {
+            SQLBuilder.Connection.Open();
             SQLiteCommand command = new SQLiteCommand();
-            SQLiteConnection connection = new SQLiteConnection(string.Format("Data source = {0}", MetaData.DBName));
-            connection.Open();
-            command.Connection = connection;
+            command.Connection = SQLBuilder.Connection;
             List<string> prms;
             command.CommandText = CreateInsertString(out prms);
             command.Prepare();
@@ -262,10 +259,10 @@ namespace DolinskSportSchool
             catch(Exception ex)
             {
                 MessageBox.Show("Ошибка ввода");
-                connection.Close();
+                SQLBuilder.Connection.Close();
                 return;
             }
-            
+            SQLBuilder.Connection.Close();
             this.Close();
         }
 
@@ -289,11 +286,10 @@ namespace DolinskSportSchool
 
         private void EditRecord()
         {
+            SQLBuilder.Connection.Open();
             SQLiteCommand command = new SQLiteCommand();
-            SQLiteConnection connection = new SQLiteConnection(string.Format("Data source = {0}", MetaData.DBName));
-            connection.Open();
             List<string> prms;
-            command.Connection = connection;
+            command.Connection = SQLBuilder.Connection;
             command.CommandText = CreateUpdateString(out prms);
             command.Prepare();
 
@@ -313,7 +309,7 @@ namespace DolinskSportSchool
                 }
             }
             command.ExecuteNonQuery();
-            connection.Close();
+            SQLBuilder.Connection.Close();
             this.Close();
         }
 

@@ -32,13 +32,11 @@ namespace DolinskSportSchool
 
         }
         private void FillDBGrid()
-        { 
-            SQLiteConnection connection =
-                new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
-            connection.Open();
+        {
+            SQLBuilder.Connection.Open();
             int tg = Convert.ToInt32(this.Tag);
             SQLiteCommand command = new SQLiteCommand(
-                SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), connection);
+                SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), SQLBuilder.Connection);
             SQLiteDataAdapter da = new SQLiteDataAdapter(command);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -68,7 +66,8 @@ namespace DolinskSportSchool
                     }
                 }
             }
-            connection.Close();
+            UpdateStats();
+            SQLBuilder.Connection.Close();
         }
 
         private void AdjustColNames()
@@ -143,19 +142,18 @@ namespace DolinskSportSchool
 
         private void AcceptBtn_Click(object sender, EventArgs e)
         {
-            SQLiteConnection connection =
-                new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
-            connection.Open();
+            SQLBuilder.Connection.Open();
             int tg = Convert.ToInt32(this.Tag);
             List<ParameterInfo> prms;
             SQLiteCommand command = new SQLiteCommand(
-                string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), SQLBuilder.BuildFiltersWherePart(Flist, out prms)), connection);
-            File.WriteAllText(@"C:\Users\Kelta\Desktop\sqltest.txt", command.CommandText);
+                string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), 
+                SQLBuilder.BuildFiltersWherePart(Flist, out prms)), SQLBuilder.Connection);
+
             command.Prepare();
             if (prms.Count == 0)
             {
-                connection.Close();
                 FillDBGrid();
+                SQLBuilder.Connection.Close();
                 return;
             }
             for (int i = 0; i < prms.Count; i++)
@@ -181,8 +179,8 @@ namespace DolinskSportSchool
             //DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
             DBGrid.Columns[0].Visible = false;
-            
-            connection.Close();
+            SQLBuilder.Connection.Close();
+            UpdateStats();
         }
 
         private void AddBtn_Click(object sender, EventArgs e)
@@ -202,15 +200,14 @@ namespace DolinskSportSchool
             if (MessageBox.Show(
                 "Удалить запись?", "Удалить запись?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                SQLiteConnection connection =
-                new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
-                connection.Open();
+                SQLBuilder.Connection.Open();
                 SQLiteCommand command = new SQLiteCommand();
                 string id = Convert.ToString(DBGrid.SelectedCells[0].Value);
                 command.CommandText = "DELETE FROM " + MetaData.tables[(int)Tag].name + " WHERE ID = " + id;
-                command.Connection = connection;
+                command.Connection = SQLBuilder.Connection;
                 command.ExecuteNonQuery();
                 Notifier.UpdateTables();
+                SQLBuilder.Connection.Close();
             }
         }
 
@@ -222,6 +219,11 @@ namespace DolinskSportSchool
         private void CloseTable(object sender, FormClosingEventArgs e)
         {
             Notifier.DropTable(this);
+        }
+
+        private void UpdateStats()
+        {
+            Stats.Text = "Кол-во записей: " + DBGrid.RowCount.ToString();
         }
     }
 }

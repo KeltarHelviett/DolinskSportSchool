@@ -38,6 +38,7 @@
             this.EditBtn = new System.Windows.Forms.Button();
             this.AddBtn = new System.Windows.Forms.Button();
             this.ColumnViewPanel = new System.Windows.Forms.Panel();
+            this.Stats = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
             this.SelectionFilter.SuspendLayout();
             this.ModifyPanel.SuspendLayout();
@@ -72,7 +73,7 @@
             // AcceptBtn
             // 
             this.AcceptBtn.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.AcceptBtn.Location = new System.Drawing.Point(3, 216);
+            this.AcceptBtn.Location = new System.Drawing.Point(5, 188);
             this.AcceptBtn.Name = "AcceptBtn";
             this.AcceptBtn.Size = new System.Drawing.Size(124, 30);
             this.AcceptBtn.TabIndex = 0;
@@ -84,10 +85,11 @@
             // 
             this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.FilterPanel.AutoScroll = true;
             this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.FilterPanel.Location = new System.Drawing.Point(139, 538);
             this.FilterPanel.Name = "FilterPanel";
-            this.FilterPanel.Size = new System.Drawing.Size(1209, 252);
+            this.FilterPanel.Size = new System.Drawing.Size(960, 252);
             this.FilterPanel.TabIndex = 2;
             // 
             // ModifyPanel
@@ -138,18 +140,30 @@
             // 
             // ColumnViewPanel
             // 
+            this.ColumnViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.ColumnViewPanel.AutoScroll = true;
             this.ColumnViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.ColumnViewPanel.Location = new System.Drawing.Point(387, 423);
+            this.ColumnViewPanel.Location = new System.Drawing.Point(1105, 484);
             this.ColumnViewPanel.Name = "ColumnViewPanel";
-            this.ColumnViewPanel.Size = new System.Drawing.Size(566, 113);
+            this.ColumnViewPanel.Size = new System.Drawing.Size(243, 306);
             this.ColumnViewPanel.TabIndex = 4;
+            // 
+            // Stats
+            // 
+            this.Stats.AutoSize = true;
+            this.Stats.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.Stats.Location = new System.Drawing.Point(2, 395);
+            this.Stats.Name = "Stats";
+            this.Stats.Size = new System.Drawing.Size(143, 21);
+            this.Stats.TabIndex = 5;
+            this.Stats.Text = "Кол-во записей: ";
             // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1348, 794);
+            this.Controls.Add(this.Stats);
             this.Controls.Add(this.ColumnViewPanel);
             this.Controls.Add(this.ModifyPanel);
             this.Controls.Add(this.FilterPanel);
@@ -163,6 +177,7 @@
             this.SelectionFilter.ResumeLayout(false);
             this.ModifyPanel.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -177,5 +192,6 @@
         private System.Windows.Forms.Button EditBtn;
         private System.Windows.Forms.Button DeleteBtn;
         private System.Windows.Forms.Panel ColumnViewPanel;
+        private System.Windows.Forms.Label Stats;
     }
 }
