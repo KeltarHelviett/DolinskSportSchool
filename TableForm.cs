@@ -18,19 +18,65 @@ namespace DolinskSportSchool
     {
         private FilterList Flist;
         private TableEdit TEdit;
-
+        private List<int> DateCols;
         public TableForm(int tag)
         {
             InitializeComponent();
             this.Tag = tag;
             this.Text = MetaData.tables[Convert.ToInt32(this.Tag)].displayName;
-            FillDBGrid();
+            GetDateCols();
+            FillDBGrid();           
             AdjustColNames();
             CreateFilters();
             CreateTableEdit();
             Notifier.LookAfterTable(this);
 
         }
+
+        public void CreateRowNumColumn()
+        {
+            DBGrid.Columns[DBGrid.Columns.Count - 1].HeaderText = "№";
+            DBGrid.Columns[DBGrid.Columns.Count - 1].Name = "rownum";
+            for (int i = 0; i < DBGrid.RowCount; i++)
+            {
+                DBGrid[DBGrid.Columns.Count - 1, i].Value = (i + 1);
+            }
+            DBGrid.Columns[DBGrid.Columns.Count - 1].DisplayIndex = 0;
+        }
+
+        public void GetDateCols()
+        {
+            DateCols = new List<int>();
+            int curCol = 1;
+            Table t = MetaData.tables[(int)Tag];
+            for (int i = 1; i < t.fields.Count; i++)
+            {
+                if (t.fields[i].displayName == "")
+                    continue;
+                if (t.fields[i].referenceTable == -1)
+                {
+                    if (t.fields[i].type == DataType.Date)
+                    {
+                        DateCols.Add(curCol);
+                    }
+                    curCol++;
+                }
+                else
+                {
+                    Table tt = MetaData.tables[t.fields[i].referenceTable];
+                    for (int j = 0; j < tt.fields.Count; j++)
+                    {
+                        if (tt.fields[j].displayName == "")
+                            continue;
+                        if (tt.fields[j].type == DataType.Date)
+                            DateCols.Add(curCol);
+                        curCol++;
+                    }
+                }
+            }
+
+        }
+
         private void FillDBGrid()
         {
             SQLBuilder.Connection.Open();
@@ -42,9 +88,11 @@ namespace DolinskSportSchool
             da.Fill(dt);
             DBGrid.Font = new Font("Time New Roman", 14);
             DBGrid.DataSource = dt;
+            CreateRowNumColumn();
             DBGrid.Columns[0].Visible = false;
             Table t = MetaData.tables[(int)Tag];
             int curCol = 1;
+
             for (int i = 1; i < t.fields.Count; i++)
             {
                 if (t.fields[i].displayName == "")
@@ -66,15 +114,31 @@ namespace DolinskSportSchool
                     }
                 }
             }
+            ChangeDateFormat(DateCols);
+            DBGrid.Columns[0].Visible = false;
             UpdateStats();
             SQLBuilder.Connection.Close();
         }
 
+        private void ChangeDateFormat(List<int> cols)
+        {
+            for (int i = 0; i < cols.Count; i++)
+            {
+                for (int j = 0; j < DBGrid.RowCount; j++)
+                {
+                    DBGrid[cols[i], j].Value = Convert.ToDateTime(DBGrid[cols[i], j].Value).ToString("dd:MM:yyyy");
+
+                }
+
+            }
+        }
+
         private void AdjustColNames()
         {
-            for (int i = 0; i < DBGrid.ColumnCount; i++)
+            for (int i = 0; i < DBGrid.ColumnCount - 1; i++)
             {
-                DBGrid.Columns[i].HeaderText = MetaData.tables[Convert.ToInt32(this.Tag)].fields[i].displayName;
+                if (MetaData.tables[Convert.ToInt32(this.Tag)].fields[i].displayName != "")
+                    DBGrid.Columns[i].HeaderText = MetaData.tables[Convert.ToInt32(this.Tag)].fields[i].displayName;
             }
         }
 
@@ -85,7 +149,7 @@ namespace DolinskSportSchool
             int displayIndex = 1;
             for (int i = 0; i < DBGrid.Columns.Count; i++)
             {
-                if (!DBGrid.Columns[i].Visible)
+                if (!DBGrid.Columns[i].Visible || DBGrid.Columns[i].HeaderText == "№")
                 {
                     --realColCount;
                     continue;
@@ -142,13 +206,12 @@ namespace DolinskSportSchool
 
         private void AcceptBtn_Click(object sender, EventArgs e)
         {
-            SQLBuilder.Connection.Open();
             int tg = Convert.ToInt32(this.Tag);
             List<ParameterInfo> prms;
             SQLiteCommand command = new SQLiteCommand(
                 string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), 
                 SQLBuilder.BuildFiltersWherePart(Flist, out prms)), SQLBuilder.Connection);
-
+            CreateRowNumColumn();
             command.Prepare();
             if (prms.Count == 0)
             {
@@ -156,6 +219,7 @@ namespace DolinskSportSchool
                 SQLBuilder.Connection.Close();
                 return;
             }
+            SQLBuilder.Connection.Open();
             for (int i = 0; i < prms.Count; i++)
             {
                 switch (prms[i].type)
@@ -178,6 +242,8 @@ namespace DolinskSportSchool
             da.Fill(dt);
             //DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
+            CreateRowNumColumn();
+            ChangeDateFormat(DateCols);
             DBGrid.Columns[0].Visible = false;
             SQLBuilder.Connection.Close();
             UpdateStats();
@@ -206,8 +272,8 @@ namespace DolinskSportSchool
                 command.CommandText = "DELETE FROM " + MetaData.tables[(int)Tag].name + " WHERE ID = " + id;
                 command.Connection = SQLBuilder.Connection;
                 command.ExecuteNonQuery();
-                Notifier.UpdateTables();
                 SQLBuilder.Connection.Close();
+                Notifier.UpdateTables();               
             }
         }
 
@@ -224,6 +290,81 @@ namespace DolinskSportSchool
         private void UpdateStats()
         {
             Stats.Text = "Кол-во записей: " + DBGrid.RowCount.ToString();
+        }
+
+        private void DBGrid_DoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            EditBtn_Click(null, null);
+        }
+
+        private void MTableDuplicates_Click(object sender, EventArgs e)
+        {
+            SQLBuilder.Connection.Open();
+            if (MetaData.tables[(int)Tag].name == "STUDENTS")
+            {
+                string s = SQLBuilder.BuildSelectPart((int)Tag).Insert(8, MetaData.tables[(int)Tag].name + ".ID, ");
+                s += " WHERE EXISTS (SELECT t2.FIRST_NAME, t2.FAMILY_NAME, t2.BIRTH_DATE FROM STUDENTS t2 "
+                    + "  WHERE STUDENTS.FIRST_NAME = t2.FIRST_NAME AND STUDENTS.FAMILY_NAME = t2.FAMILY_NAME AND STUDENTS.ID <> t2.ID) ";
+                SQLiteCommand command = new SQLiteCommand(s, SQLBuilder.Connection);
+                SQLiteDataAdapter da = new SQLiteDataAdapter(command);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                SQLBuilder.Connection.Close();
+                int yellow = dt.Rows.Count;
+                SQLBuilder.Connection.Open();
+                s = SQLBuilder.BuildSelectPart((int)Tag).Insert(8, MetaData.tables[(int)Tag].name + ".ID, ");
+                s += " WHERE EXISTS (SELECT t2.FIRST_NAME, t2.FAMILY_NAME, t2.BIRTH_DATE FROM STUDENTS t2 "
+                    + "  WHERE STUDENTS.FIRST_NAME = t2.FIRST_NAME AND STUDENTS.FAMILY_NAME = t2.FAMILY_NAME"
+                    + " AND DATE(STUDENTS.BIRTH_DATE) = DATE(t2.BIRTH_DATE) AND STUDENTS.ID<> t2.ID) ";
+                SQLiteCommand com = new SQLiteCommand(s, SQLBuilder.Connection);
+                SQLiteDataAdapter da1 = new SQLiteDataAdapter(com);
+                DataTable dt1 = new DataTable();
+                da1.Fill(dt1);
+                dt.Merge(dt1);
+                DBGrid.DataSource = dt;
+                for (int i = 0; i < yellow; i++)
+                {
+                    DBGrid.Rows[i].DefaultCellStyle.ForeColor = Color.GreenYellow;
+                }
+
+                for (int i = yellow; i < DBGrid.RowCount; i++)
+                {
+                    DBGrid.Rows[i].DefaultCellStyle.ForeColor = Color.Red;
+                }
+                ChangeDateFormat(DateCols);
+                DBGrid.Columns[0].Visible = false;
+            }
+            else
+            {
+                string s = SQLBuilder.BuildSelectPart((int)Tag).Insert(8, MetaData.tables[(int)Tag].name + ".ID, ");
+                s += "WHERE EXISTS ( SELECT ";
+                string w = " WHERE ";
+                Table t = MetaData.tables[(int)Tag];
+                for (int i = 0; i < t.fields.Count; i++)
+                {
+                    s += " t2." + t.fields[i].name + ", ";
+                    if (t.fields[i].displayName == "")
+                        continue;
+                    w += t.name + "." + t.fields[i].name + " = " + "t2." + t.fields[i].name + " AND ";
+                }
+                s = s.Remove(s.Length - 2, 1);
+                w += t.name + ".ID" + " <> " + "t2.ID)";
+                s += " FROM " + t.name + " t2 ";
+                s += w ;
+                SQLiteCommand command = new SQLiteCommand(s, SQLBuilder.Connection);
+                SQLiteDataAdapter da = new SQLiteDataAdapter(command);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                DBGrid.DataSource = dt;
+                for (int i = 0; i < DBGrid.RowCount; i++)
+                {
+                    DBGrid.Rows[i].DefaultCellStyle.ForeColor = Color.Red;
+                }
+                ChangeDateFormat(DateCols);
+                DBGrid.Columns[0].Visible = false;
+            }
+            
+            SQLBuilder.Connection.Close();
         }
     }
 }

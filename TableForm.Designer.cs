@@ -39,9 +39,13 @@
             this.AddBtn = new System.Windows.Forms.Button();
             this.ColumnViewPanel = new System.Windows.Forms.Panel();
             this.Stats = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MTable = new System.Windows.Forms.ToolStripMenuItem();
+            this.MTableDuplicates = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
             this.SelectionFilter.SuspendLayout();
             this.ModifyPanel.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // DBGrid
@@ -53,12 +57,13 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DBGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DBGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DBGrid.Location = new System.Drawing.Point(-1, -4);
+            this.DBGrid.Location = new System.Drawing.Point(-1, 30);
             this.DBGrid.Name = "DBGrid";
             this.DBGrid.ReadOnly = true;
             this.DBGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.DBGrid.Size = new System.Drawing.Size(1349, 396);
+            this.DBGrid.Size = new System.Drawing.Size(1349, 362);
             this.DBGrid.TabIndex = 0;
+            this.DBGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DBGrid_DoubleClick);
             // 
             // SelectionFilter
             // 
@@ -158,6 +163,31 @@
             this.Stats.TabIndex = 5;
             this.Stats.Text = "Кол-во записей: ";
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MTable});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1348, 24);
+            this.menuStrip1.TabIndex = 6;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // MTable
+            // 
+            this.MTable.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MTableDuplicates});
+            this.MTable.Name = "MTable";
+            this.MTable.Size = new System.Drawing.Size(66, 20);
+            this.MTable.Text = "Таблица";
+            // 
+            // MTableDuplicates
+            // 
+            this.MTableDuplicates.Name = "MTableDuplicates";
+            this.MTableDuplicates.Size = new System.Drawing.Size(188, 22);
+            this.MTableDuplicates.Text = "Показать Дубликаты";
+            this.MTableDuplicates.Click += new System.EventHandler(this.MTableDuplicates_Click);
+            // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -169,13 +199,17 @@
             this.Controls.Add(this.FilterPanel);
             this.Controls.Add(this.SelectionFilter);
             this.Controls.Add(this.DBGrid);
+            this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "TableForm";
             this.Text = "TableForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseTable);
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).EndInit();
             this.SelectionFilter.ResumeLayout(false);
             this.ModifyPanel.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -193,5 +227,8 @@
         private System.Windows.Forms.Button DeleteBtn;
         private System.Windows.Forms.Panel ColumnViewPanel;
         private System.Windows.Forms.Label Stats;
+        private System.Windows.Forms.ToolStripMenuItem MTable;
+        private System.Windows.Forms.ToolStripMenuItem MTableDuplicates;
+        private System.Windows.Forms.MenuStrip menuStrip1;
     }
 }

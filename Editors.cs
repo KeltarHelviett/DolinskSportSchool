@@ -114,6 +114,7 @@ namespace DolinskSportSchool
                     x = 2;
                 }
             }
+            this.Update(null);
         }
 
         public void Update(ColumnEditor self = null)
@@ -129,7 +130,7 @@ namespace DolinskSportSchool
                 if (columnEditors[i].ShowColumnBox.Checked)
                 {     
                     DBGrid.Columns[ci].Visible = true;
-                    DBGrid.Columns[ci].DisplayIndex = di;
+                    DBGrid.Columns[ci].DisplayIndex = di + 1;
                 }
                 else
                 {
@@ -146,7 +147,7 @@ namespace DolinskSportSchool
                 {
                     if (ce != self && ce.DisplayIndex.Value == self.DisplayIndex.Value)
                     {
-                        ce.DisplayIndex.Value = DBGrid.Columns[self.ColIndex].DisplayIndex;
+                        ce.DisplayIndex.Value = DBGrid.Columns[self.ColIndex].DisplayIndex - 1;
                         break;
                     }
                 }
