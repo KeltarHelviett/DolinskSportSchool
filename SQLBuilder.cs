@@ -27,6 +27,12 @@ namespace DolinskSportSchool
 
         static public SQLiteConnection Connection = new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
 
+        public static void UpdateConnection()
+        {
+            Connection.Close();
+            Connection = new SQLiteConnection(string.Format("Data Source={0};", MetaData.DBName));
+        }
+
         static public string BuildSelectPart(int tag)
         {
             string s = " SELECT ";

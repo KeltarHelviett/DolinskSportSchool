@@ -33,6 +33,12 @@
             this.MTables = new System.Windows.Forms.ToolStripMenuItem();
             this.MAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MAboutDeveloper = new System.Windows.Forms.ToolStripMenuItem();
+            this.базаДанныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SaveDialog = new System.Windows.Forms.SaveFileDialog();
+            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenDialog = new System.Windows.Forms.OpenFileDialog();
+            this.создатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -40,6 +46,7 @@
             // 
             this.Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.MTables,
+            this.базаДанныхToolStripMenuItem,
             this.MAbout});
             this.Menu.Location = new System.Drawing.Point(0, 0);
             this.Menu.Name = "Menu";
@@ -65,9 +72,48 @@
             // MAboutDeveloper
             // 
             this.MAboutDeveloper.Name = "MAboutDeveloper";
-            this.MAboutDeveloper.Size = new System.Drawing.Size(127, 22);
+            this.MAboutDeveloper.Size = new System.Drawing.Size(152, 22);
             this.MAboutDeveloper.Text = "Developer";
             this.MAboutDeveloper.Click += new System.EventHandler(this.developerToolStripMenuItem_Click);
+            // 
+            // базаДанныхToolStripMenuItem
+            // 
+            this.базаДанныхToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.создатьToolStripMenuItem,
+            this.открытьToolStripMenuItem,
+            this.сохранитьToolStripMenuItem});
+            this.базаДанныхToolStripMenuItem.Name = "базаДанныхToolStripMenuItem";
+            this.базаДанныхToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
+            this.базаДанныхToolStripMenuItem.Text = "База данных";
+            // 
+            // сохранитьToolStripMenuItem
+            // 
+            this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.сохранитьToolStripMenuItem.Text = "Сохранить";
+            this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // SaveDialog
+            // 
+            this.SaveDialog.Filter = "SQLite Data Base|*.db";
+            // 
+            // открытьToolStripMenuItem
+            // 
+            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.открытьToolStripMenuItem.Text = "Открыть";
+            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
+            // 
+            // OpenDialog
+            // 
+            this.OpenDialog.Filter = "SQLite Data Base|*.db";
+            // 
+            // создатьToolStripMenuItem
+            // 
+            this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
+            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.создатьToolStripMenuItem.Text = "Создать";
+            this.создатьToolStripMenuItem.Click += new System.EventHandler(this.создатьToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -92,6 +138,12 @@
         private System.Windows.Forms.ToolStripMenuItem MTables;
         private System.Windows.Forms.ToolStripMenuItem MAbout;
         private System.Windows.Forms.ToolStripMenuItem MAboutDeveloper;
+        private System.Windows.Forms.ToolStripMenuItem базаДанныхToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
+        private System.Windows.Forms.SaveFileDialog SaveDialog;
+        private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog OpenDialog;
+        private System.Windows.Forms.ToolStripMenuItem создатьToolStripMenuItem;
     }
 }
 

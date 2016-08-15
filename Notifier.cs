@@ -82,5 +82,17 @@ namespace DolinskSportSchool
                 TableForms[i].UpdateTable();
             }
         }
+
+        static public void CloseEverything()
+        {
+            for (int i = 0; i < TableForms.Count; i++)
+            {
+                TableForms[i].Close();
+            }
+            for (int i = 0; i < CardInfos.Count; i++)
+            {
+                CardInfos[i].self.Close();
+            }
+        }
     }
 }

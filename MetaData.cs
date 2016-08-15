@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace DolinskSportSchool
 {
@@ -42,6 +43,20 @@ namespace DolinskSportSchool
             f.referenceTable = refereneTable;
             f.aligment = aligment;
             tables[ind].fields.Add(f);
+        }
+
+        public static void GetDBName()
+        {
+            FileStream fs = new FileStream(Application.StartupPath + "\\config", FileMode.OpenOrCreate);
+            StreamReader sr = new StreamReader(fs);
+            string filename = "";
+            if ((filename = sr.ReadLine()) != null)
+                DBName = filename;
+            else
+                DBName = Application.StartupPath + "\\dss.db";
+            fs.Close();
+            sr.Close();
+
         }
 
         public static string DBName = Application.StartupPath + "\\dss.db";

@@ -28,6 +28,8 @@ namespace DolinskSportSchool
         {
             int count = 0;
 
+            MetaData.GetDBName();
+
             MetaData.AddTable("GENDERS", "");
             MetaData.AddField(count, "ID", "", DataType.Integer, -1, DataGridViewContentAlignment.MiddleLeft);
             MetaData.AddField(count++, "GENDER", "Пол", DataType.String, -1, DataGridViewContentAlignment.MiddleCenter);

@@ -57,6 +57,95 @@ namespace DolinskSportSchool
          
         }
 
-        
+        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveDialog.ShowDialog();
+
+            if (SaveDialog.FileName != "")
+            {
+                MessageBox.Show(SaveDialog.FileName);
+                if (System.IO.File.Exists(SaveDialog.FileName))
+                    System.IO.File.Delete(SaveDialog.FileName);
+                System.IO.File.Copy(MetaData.DBName, SaveDialog.FileName);
+            }
+        }
+
+        private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            OpenDialog.FileName = MetaData.DBName;
+            OpenDialog.ShowDialog();
+            if (OpenDialog.FileName != "")
+            {
+                if (System.IO.File.Exists(OpenDialog.FileName))
+                {
+                    Notifier.CloseEverything();
+                    MetaData.DBName = OpenDialog.FileName;
+                    SQLBuilder.UpdateConnection();
+                    FileStream fs = new FileStream(Application.StartupPath + "\\config", FileMode.OpenOrCreate);
+                    StreamWriter writer = new StreamWriter(fs);
+                    writer.WriteLine(MetaData.DBName);
+                    writer.Close();
+                    fs.Close();
+                    
+                }
+            }
+        }
+
+        private void создатьToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string s = "";
+            s += "CREATE TABLE COACHES(";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+            s += "COACH_FFM TEXT NOT NULL";
+            s += ");";
+
+            s += "CREATE TABLE SPORTS(";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+            s += "SPORT_NAME TEXT NOT NULL";
+            s += ");";
+
+            s += "CREATE TABLE SCHOOLS(";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+            s += "SCHOOL_NAME TEXT NOT NULL";
+            s += ");";
+
+            s += "CREATE TABLE CLASSES(";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+            s += "CLASS_NAME TEXT NOT NULL";
+            s += ");";
+
+            s += "CREATE TABLE GENDERS(";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+            s += "GENDER TEXT NOT NULL";
+            s += ");";
+
+            s += "CREATE TABLE STAGES(";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,";
+            s += "STAGE_NAME TEXT NOT NULL";
+            s += ");";
+
+            s += "CREATE TABLE STUDENTS( ";
+            s += "ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
+              + "FAMILY_NAME TEXT NOT NULL,"
+              + "FIRST_NAME TEXT NOT NULL,"
+              + "BIRTH_DATE TEXT NOT NULL,"
+              + "GENDER_ID INTEGER NOT NULL REFERENCES GENDERS(ID),"
+              + "SCHOOL_ID INTEGER NOT NULL REFERENCES SCHOOLS(ID),"
+              + "CLASS_ID INTEGER NOT NULL REFERENCES CLASSES(ID),"
+              + "SPORT_ID INTEGER NOT NULL REFERENCES SPORTS(ID),"
+              + "COACH_ID INTEGER NOT NULL REFERENCES COACHES(ID),"
+              + "STAGE_ID INTEGER NOT NULL REFERENCES STAGES(ID)"
+              + ");";
+
+            MetaData.DBName = Application.StartupPath + "\\asd.db";
+
+            SQLBuilder.UpdateConnection();
+            SQLiteCommand command = new SQLiteCommand(s, SQLBuilder.Connection);
+            SQLiteConnection.CreateFile(MetaData.DBName);
+            SQLBuilder.Connection.Open();
+            command.ExecuteNonQuery();
+            SQLBuilder.Connection.Close();
+        }
     }
 }
