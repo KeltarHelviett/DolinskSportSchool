@@ -138,7 +138,7 @@ namespace DolinskSportSchool
                     text.Parent = parent;
                     text.Left = x;
                     text.Top = this.title.Top + this.title.Height + 10;
-                    text.Width = 115;
+                    text.Width = 130;
                     text.Font = new System.Drawing.Font("Times New Roman", 11);
                     break;
                 case EditorType.DateInterval:
@@ -213,7 +213,7 @@ namespace DolinskSportSchool
                 {
                     ls.Add(rec[0].ToString());
                 }
-                left = (filters.Count) * 120 + 5;
+                left = (filters.Count) * 140 + 5;
                 Filter f = new Filter(this.parent, fi.type, ls, this.left, this.top, fi);
                 filters.Add(f);
                 connection.Close();
@@ -228,7 +228,7 @@ namespace DolinskSportSchool
                         filters.Remove(filters[i]);
                         for (int j = i; j < filters.Count; j++)
                         {
-                            filters[j].SetPosition(j * 120 + 5, 10);
+                            filters[j].SetPosition(j * 140 + 5, 10);
                         }
                         break;
                     }

@@ -19,6 +19,7 @@ namespace DolinskSportSchool
         private FilterList Flist;
         private TableEdit TEdit;
         private List<int> DateCols;
+
         public TableForm(int tag)
         {
             InitializeComponent();
@@ -33,13 +34,19 @@ namespace DolinskSportSchool
 
         }
 
-        public void CreateRowNumColumn()
+        public void CreateDBGridMenu()
+        {
+
+        }
+
+        public void RefillRowNumColumn()
         {
             DBGrid.Columns[DBGrid.Columns.Count - 1].HeaderText = "№";
             DBGrid.Columns[DBGrid.Columns.Count - 1].Name = "rownum";
+            DBGrid.Columns[DBGrid.Columns.Count - 1].ValueType = typeof(string);
             for (int i = 0; i < DBGrid.RowCount; i++)
             {
-                DBGrid[DBGrid.Columns.Count - 1, i].Value = (i + 1);
+                DBGrid[DBGrid.Columns.Count - 1, i].Value = (i + 1).ToString() + ".";
             }
             DBGrid.Columns[DBGrid.Columns.Count - 1].DisplayIndex = 0;
         }
@@ -88,7 +95,7 @@ namespace DolinskSportSchool
             da.Fill(dt);
             DBGrid.Font = new Font("Time New Roman", 14);
             DBGrid.DataSource = dt;
-            CreateRowNumColumn();
+            RefillRowNumColumn();
             DBGrid.Columns[0].Visible = false;
             Table t = MetaData.tables[(int)Tag];
             int curCol = 1;
@@ -126,7 +133,7 @@ namespace DolinskSportSchool
             {
                 for (int j = 0; j < DBGrid.RowCount; j++)
                 {
-                    DBGrid[cols[i], j].Value = Convert.ToDateTime(DBGrid[cols[i], j].Value).ToString("dd:MM:yyyy");
+                    DBGrid[cols[i], j].Value = Convert.ToDateTime(DBGrid[cols[i], j].Value).ToString("dd.MM.yyyy");
 
                 }
 
@@ -211,7 +218,7 @@ namespace DolinskSportSchool
             SQLiteCommand command = new SQLiteCommand(
                 string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), 
                 SQLBuilder.BuildFiltersWherePart(Flist, out prms)), SQLBuilder.Connection);
-            CreateRowNumColumn();
+            RefillRowNumColumn();
             command.Prepare();
             if (prms.Count == 0)
             {
@@ -242,7 +249,7 @@ namespace DolinskSportSchool
             da.Fill(dt);
             //DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
-            CreateRowNumColumn();
+            RefillRowNumColumn();
             ChangeDateFormat(DateCols);
             DBGrid.Columns[0].Visible = false;
             SQLBuilder.Connection.Close();
@@ -365,6 +372,18 @@ namespace DolinskSportSchool
             }
             
             SQLBuilder.Connection.Close();
+        }
+
+        private void HeaderClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            RefillRowNumColumn();
+        }
+
+        private void CopyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DataObject dobj = DBGrid.GetClipboardContent();
+            if (dobj != null)
+                Clipboard.SetDataObject(dobj);
         }
     }
 }

@@ -58,11 +58,11 @@ namespace DolinskSportSchool
             MetaData.AddField(count, "FIRST_NAME", "Имя", DataType.String, -1, DataGridViewContentAlignment.MiddleLeft);
             MetaData.AddField(count, "BIRTH_DATE", "Дата рождения", DataType.Date, -1, DataGridViewContentAlignment.MiddleCenter);
             MetaData.AddField(count, "GENDER_ID", "Пол", DataType.Integer, 0, DataGridViewContentAlignment.MiddleCenter);
-            MetaData.AddField(count, "SCHOOL_ID", "Образовательное Учреждение", DataType.String, 1, DataGridViewContentAlignment.MiddleCenter);
+            MetaData.AddField(count, "SCHOOL_ID", "Образовательное учреждение", DataType.String, 1, DataGridViewContentAlignment.MiddleCenter);
             MetaData.AddField(count, "CLASS_ID", "Класс", DataType.String, 2, DataGridViewContentAlignment.MiddleCenter);
-            MetaData.AddField(count, "SPORT_ID", "Вид Спорта", DataType.String, 3, DataGridViewContentAlignment.MiddleCenter);
-            MetaData.AddField(count, "COACH_ID", "Тренер", DataType.String, 4, DataGridViewContentAlignment.MiddleCenter);
-            MetaData.AddField(count++, "STAGE_ID", "Этап Подготовки", DataType.String, 5, DataGridViewContentAlignment.MiddleCenter);
+            MetaData.AddField(count, "SPORT_ID", "Вид спорта", DataType.String, 3, DataGridViewContentAlignment.MiddleCenter);
+            MetaData.AddField(count, "COACH_ID", "Тренер-преподаватель", DataType.String, 4, DataGridViewContentAlignment.MiddleCenter);
+            MetaData.AddField(count++, "STAGE_ID", "Группа", DataType.String, 5, DataGridViewContentAlignment.MiddleCenter);
         }
     }
 }

@@ -51,7 +51,7 @@ namespace DolinskSportSchool
                 }
             }
             s = s.Remove(s.Length - 2, 1) ;
-            s += " , 1 FROM " + t.name;
+            s += " , \"1\" FROM " + t.name;
             s += inners;
             return s;
         }

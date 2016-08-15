@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableForm));
             this.DBGrid = new System.Windows.Forms.DataGridView();
             this.SelectionFilter = new System.Windows.Forms.Panel();
@@ -42,28 +43,33 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MTable = new System.Windows.Forms.ToolStripMenuItem();
             this.MTableDuplicates = new System.Windows.Forms.ToolStripMenuItem();
+            this.DBGridMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
             this.SelectionFilter.SuspendLayout();
             this.ModifyPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.DBGridMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // DBGrid
             // 
             this.DBGrid.AllowUserToAddRows = false;
             this.DBGrid.AllowUserToDeleteRows = false;
-            this.DBGrid.AllowUserToOrderColumns = true;
             this.DBGrid.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.DBGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DBGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DBGrid.ContextMenuStrip = this.DBGridMenu;
             this.DBGrid.Location = new System.Drawing.Point(-1, 30);
             this.DBGrid.Name = "DBGrid";
             this.DBGrid.ReadOnly = true;
+            this.DBGrid.RowHeadersVisible = false;
             this.DBGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.DBGrid.Size = new System.Drawing.Size(1349, 362);
             this.DBGrid.TabIndex = 0;
             this.DBGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DBGrid_DoubleClick);
+            this.DBGrid.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.HeaderClick);
             // 
             // SelectionFilter
             // 
@@ -88,7 +94,8 @@
             // 
             // FilterPanel
             // 
-            this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.FilterPanel.AutoScroll = true;
             this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -145,7 +152,8 @@
             // 
             // ColumnViewPanel
             // 
-            this.ColumnViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.ColumnViewPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ColumnViewPanel.AutoScroll = true;
             this.ColumnViewPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.ColumnViewPanel.Location = new System.Drawing.Point(1105, 484);
@@ -188,6 +196,20 @@
             this.MTableDuplicates.Text = "Показать Дубликаты";
             this.MTableDuplicates.Click += new System.EventHandler(this.MTableDuplicates_Click);
             // 
+            // DBGridMenu
+            // 
+            this.DBGridMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem});
+            this.DBGridMenu.Name = "DBGridMenu";
+            this.DBGridMenu.Size = new System.Drawing.Size(153, 48);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyToolStripMenuItem.Text = "Копировать";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
+            // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -210,6 +232,7 @@
             this.ModifyPanel.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.DBGridMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -230,5 +253,7 @@
         private System.Windows.Forms.ToolStripMenuItem MTable;
         private System.Windows.Forms.ToolStripMenuItem MTableDuplicates;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ContextMenuStrip DBGridMenu;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
     }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace DolinskSportSchool
 {
@@ -214,7 +215,7 @@ namespace DolinskSportSchool
 
             this.from.Left = x;
             this.from.Top = this.fromTitle.Top + this.fromTitle.Height + 10;
-            this.from.Width = 115;
+            this.from.Width = 130;
 
             this.tillTitle.Text = "До";
             this.tillTitle.Left = x;
@@ -222,7 +223,7 @@ namespace DolinskSportSchool
 
             this.till.Left = x;
             this.till.Top = this.tillTitle.Top + this.tillTitle.Height + 10;
-            this.till.Width = 115;
+            this.till.Width = 130;
         }
 
         public void Destroy()
@@ -286,7 +287,7 @@ namespace DolinskSportSchool
             this.summary.Top = this.title.Top + this.title.Height + 10;
             this.summary.ReadOnly = true;
             this.summary.Parent = parent;
-            this.summary.Width = 115;
+            this.summary.Width = 130;
             this.summary.Font = f;
             this.summary.Click += new EventHandler((sender, e) => { this.selectionPanel.Show(); });
             this.selectionPanel.Left = this.summary.Left;
@@ -297,21 +298,31 @@ namespace DolinskSportSchool
             for (int i = 0; i < values.Count; i++)
             {
                 CheckBox cb = new CheckBox();
+                Size sz = TextRenderer.MeasureText(values[i], f);
+                int k = 1;
+                while (sz.Width > 100)
+                {
+                    k++;
+                    sz = TextRenderer.MeasureText(values[i].Remove(values[i].Length - k), cb.Font);
+                }
+                if (k > 1)
+                    values[i] = values[i].Insert(values[i].Length - k, "\r\n");
                 cb.Text = values[i];
                 cb.RightToLeft = RightToLeft.No;
-                //cb.Width = 100;
+                cb.AutoSize = true;
+                cb.Width = 120;
                 cb.Parent = this.selectionPanel;
                 cb.Left = cbx;
                 cb.Top = cby;
                 cb.Font = f;
-                cby += 20;
+                cby = cb.Bottom + 1;
                 this.selections.Add(cb);
             }
             this.acceptBtn.Parent = this.selectionPanel;
             this.acceptBtn.Left = cbx;
             this.acceptBtn.Top = cby;
-            this.acceptBtn.Width = 40;
-            this.acceptBtn.Height = 20;
+            this.acceptBtn.Width = 42;
+            this.acceptBtn.Height = 22;
             this.acceptBtn.Text = "OK";
             this.acceptBtn.Click += new EventHandler(onAcceptBtnClick);
             this.acceptBtn.Font = f;
@@ -320,7 +331,7 @@ namespace DolinskSportSchool
             this.selectionPanel.Height = 150;
             this.selectionPanel.Width = this.summary.Width;
             this.selectionPanel.HorizontalScroll.Value = this.selectionPanel.HorizontalScroll.Maximum;
-
+            this.selectionPanel.ScrollControlIntoView(this.selectionPanel.Controls[0]);
 
             this.summary.Show();
             this.selectionPanel.Show();

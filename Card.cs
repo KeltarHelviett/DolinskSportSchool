@@ -79,6 +79,8 @@ namespace DolinskSportSchool
             if (Notifier.CheckCardExistence(this.cardId, (int)this.Tag))
                 this.Close();
             Notifier.LookAfterCard(this);
+            SaveBtn.Left = this.Width / 2 - SaveBtn.Width - 50;
+            CanceleBtn.Left = this.Width / 2 + CanceleBtn.Width + 50;
             this.Show();
         }
 
@@ -101,6 +103,7 @@ namespace DolinskSportSchool
             Editor e = new Editor();
             e.et = et;
             Control ctrl;
+            
             switch (et)
             {
                 case EditorType.TextBox:
@@ -118,6 +121,7 @@ namespace DolinskSportSchool
                     ctrl = new TextBox();
                     break;
             }
+            ctrl.Font = new System.Drawing.Font("Times New Roman", 10);
             ctrl.Left = x;
             ctrl.Top = y;
             ctrl.Width = 110;
@@ -173,6 +177,7 @@ namespace DolinskSportSchool
                 if (f.referenceTable == -1)
                 {
                     Label l = new Label();
+                    l.Font = new System.Drawing.Font("Times New Roman", 10);
                     l.Left = x;
                     l.Top = y;
                     l.Text = f.displayName;
@@ -197,6 +202,7 @@ namespace DolinskSportSchool
                         if (rf.displayName == "")
                             continue;
                         Label l = new Label();
+                        l.Font = new System.Drawing.Font("Times New Roman", 10);
                         l.Left = x;
                         l.Top = y;
                         l.Text = rf.displayName;
@@ -236,32 +242,25 @@ namespace DolinskSportSchool
             List<string> prms;
             command.CommandText = CreateInsertString(out prms);
             command.Prepare();
-
-            for (int i = 0; i < editors.Count; i++)
-            {
-                switch (editors[i].et)
+            
+                for (int i = 0; i < editors.Count; i++)
                 {
-                    case EditorType.TextBox:
-                        command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text);
-                        break;
-                    case EditorType.Date:
-                        command.Parameters.AddWithValue(prms[i], (editors[i].c as DateTimePicker).Value.ToString("yyyy-MM-dd"));
-                        break;
-                    case EditorType.ComboBox:
-                        command.Parameters.AddWithValue(prms[i], Convert.ToString(((editors[i].c as ComboBox).SelectedItem as ComboBoxItem).ID));
-                        break;
+                    switch (editors[i].et)
+                    {
+                        case EditorType.TextBox:
+                            command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text);
+                            break;
+                        case EditorType.Date:
+                            command.Parameters.AddWithValue(prms[i], (editors[i].c as DateTimePicker).Value.ToString("yyyy-MM-dd"));
+                            break;
+                        case EditorType.ComboBox:
+                            command.Parameters.AddWithValue(prms[i], Convert.ToString(((editors[i].c as ComboBox).SelectedItem as ComboBoxItem).ID));
+                            break;
+                    }
                 }
-            }
-            try
-            {
-                command.ExecuteNonQuery();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Ошибка ввода");
-                SQLBuilder.Connection.Close();
-                return;
-            }
+            
+                    command.ExecuteNonQuery();
+           
             SQLBuilder.Connection.Close();
             this.Close();
         }
@@ -315,10 +314,20 @@ namespace DolinskSportSchool
 
         private void SaveBtn_Click(object sender, EventArgs e)
         {
-            if (cardId == -1)
-                AddNewRecord();
-            else
-                EditRecord();
+            try
+            {
+                if (cardId == -1)
+                    AddNewRecord();
+                else
+                    EditRecord();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Ошибка ввода!");
+                SQLBuilder.Connection.Close();
+                return;
+            }
+            
             Notifier.UpdateTables();
             
         }
@@ -331,6 +340,16 @@ namespace DolinskSportSchool
         private void CloseCard(object sender, FormClosingEventArgs e)
         {
             Notifier.DropCard(this);
+        }
+
+        private void BResize(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void EResize(object sender, EventArgs e)
+        {
+           
         }
     }
 }
