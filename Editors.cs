@@ -299,14 +299,7 @@ namespace DolinskSportSchool
             {
                 CheckBox cb = new CheckBox();
                 Size sz = TextRenderer.MeasureText(values[i], f);
-                int k = 1;
-                while (sz.Width > 100)
-                {
-                    k++;
-                    sz = TextRenderer.MeasureText(values[i].Remove(values[i].Length - k), cb.Font);
-                }
-                if (k > 1)
-                    values[i] = values[i].Insert(values[i].Length - k, "\r\n");
+                
                 cb.Text = values[i];
                 cb.RightToLeft = RightToLeft.No;
                 cb.AutoSize = true;
