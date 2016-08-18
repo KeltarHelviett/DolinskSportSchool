@@ -328,7 +328,7 @@ namespace DolinskSportSchool
                 return;
             }
             
-            Notifier.UpdateTables();
+            Notifier.UpdateTables(cardId);
             
         }
 

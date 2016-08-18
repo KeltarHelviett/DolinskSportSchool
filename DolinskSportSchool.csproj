@@ -55,6 +55,18 @@
     <Compile Include="Card.Designer.cs">
       <DependentUpon>Card.cs</DependentUpon>
     </Compile>
+    <Compile Include="CompanyInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompanyInfo.Designer.cs">
+      <DependentUpon>CompanyInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DeveloperInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DeveloperInfo.Designer.cs">
+      <DependentUpon>DeveloperInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Editors.cs" />
     <Compile Include="FilterList.cs" />
     <Compile Include="MainForm.cs">
@@ -76,6 +88,12 @@
     </Compile>
     <EmbeddedResource Include="Card.resx">
       <DependentUpon>Card.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompanyInfo.resx">
+      <DependentUpon>CompanyInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DeveloperInfo.resx">
+      <DependentUpon>DeveloperInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

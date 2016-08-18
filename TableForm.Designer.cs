@@ -31,6 +31,8 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TableForm));
             this.DBGrid = new System.Windows.Forms.DataGridView();
+            this.DBGridMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SelectionFilter = new System.Windows.Forms.Panel();
             this.AcceptBtn = new System.Windows.Forms.Button();
             this.FilterPanel = new System.Windows.Forms.Panel();
@@ -43,13 +45,11 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.MTable = new System.Windows.Forms.ToolStripMenuItem();
             this.MTableDuplicates = new System.Windows.Forms.ToolStripMenuItem();
-            this.DBGridMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).BeginInit();
+            this.DBGridMenu.SuspendLayout();
             this.SelectionFilter.SuspendLayout();
             this.ModifyPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.DBGridMenu.SuspendLayout();
             this.SuspendLayout();
             // 
             // DBGrid
@@ -70,6 +70,20 @@
             this.DBGrid.TabIndex = 0;
             this.DBGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DBGrid_DoubleClick);
             this.DBGrid.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.HeaderClick);
+            // 
+            // DBGridMenu
+            // 
+            this.DBGridMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem});
+            this.DBGridMenu.Name = "DBGridMenu";
+            this.DBGridMenu.Size = new System.Drawing.Size(140, 26);
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(139, 22);
+            this.copyToolStripMenuItem.Text = "Копировать";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
             // 
             // SelectionFilter
             // 
@@ -94,9 +108,7 @@
             // 
             // FilterPanel
             // 
-            this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.FilterPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.FilterPanel.AutoScroll = true;
             this.FilterPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.FilterPanel.Location = new System.Drawing.Point(139, 538);
@@ -196,20 +208,6 @@
             this.MTableDuplicates.Text = "Показать Дубликаты";
             this.MTableDuplicates.Click += new System.EventHandler(this.MTableDuplicates_Click);
             // 
-            // DBGridMenu
-            // 
-            this.DBGridMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.copyToolStripMenuItem});
-            this.DBGridMenu.Name = "DBGridMenu";
-            this.DBGridMenu.Size = new System.Drawing.Size(153, 48);
-            // 
-            // copyToolStripMenuItem
-            // 
-            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.copyToolStripMenuItem.Text = "Копировать";
-            this.copyToolStripMenuItem.Click += new System.EventHandler(this.CopyToolStripMenuItem_Click);
-            // 
             // TableForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,11 +226,11 @@
             this.Text = "TableForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CloseTable);
             ((System.ComponentModel.ISupportInitialize)(this.DBGrid)).EndInit();
+            this.DBGridMenu.ResumeLayout(false);
             this.SelectionFilter.ResumeLayout(false);
             this.ModifyPanel.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.DBGridMenu.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

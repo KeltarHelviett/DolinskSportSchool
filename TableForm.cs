@@ -284,9 +284,30 @@ namespace DolinskSportSchool
             }
         }
 
-        public void UpdateTable()
+        public void UpdateTable(int id = 0)
         {
             AcceptBtn_Click(null, null);
+            if (id == 0)
+                DBGrid.Rows[0].Selected = true;
+            else if (id == -1)
+            {
+                DBGrid.Rows[0].Selected = false;
+                DBGrid.Rows[DBGrid.Rows.Count - 1].Selected = true;
+                DBGrid.FirstDisplayedScrollingRowIndex = DBGrid.SelectedRows[0].Index;
+            }
+            else
+            {
+                DBGrid.Rows[0].Selected = false;
+                for (int i = 0; i < DBGrid.Rows.Count; i++)
+                {
+                    if ((Int64)DBGrid.Rows[i].Cells[0].Value == id)
+                    {
+                        DBGrid.Rows[i].Selected = true;
+                        DBGrid.FirstDisplayedScrollingRowIndex = DBGrid.SelectedRows[0].Index;
+                    }
+                }
+            }
+            
         }
 
         private void CloseTable(object sender, FormClosingEventArgs e)

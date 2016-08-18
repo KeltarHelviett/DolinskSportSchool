@@ -25,7 +25,8 @@ namespace DolinskSportSchool
 
         private void developerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            CompanyInfo ci = new CompanyInfo();
+            ci.Show();
         }
 
 
@@ -146,6 +147,12 @@ namespace DolinskSportSchool
             SQLBuilder.Connection.Open();
             command.ExecuteNonQuery();
             SQLBuilder.Connection.Close();
+        }
+
+        private void оРазработчикеToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeveloperInfo di = new DeveloperInfo();
+            di.Show();
         }
     }
 }

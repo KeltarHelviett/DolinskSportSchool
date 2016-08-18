@@ -31,14 +31,15 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.Menu = new System.Windows.Forms.MenuStrip();
             this.MTables = new System.Windows.Forms.ToolStripMenuItem();
+            this.базаДанныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.создатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.MAboutDeveloper = new System.Windows.Forms.ToolStripMenuItem();
-            this.базаДанныхToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SaveDialog = new System.Windows.Forms.SaveFileDialog();
-            this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenDialog = new System.Windows.Forms.OpenFileDialog();
-            this.создатьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.оРазработчикеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Menu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -61,21 +62,6 @@
             this.MTables.Size = new System.Drawing.Size(69, 20);
             this.MTables.Text = "Таблицы";
             // 
-            // MAbout
-            // 
-            this.MAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.MAboutDeveloper});
-            this.MAbout.Name = "MAbout";
-            this.MAbout.Size = new System.Drawing.Size(65, 20);
-            this.MAbout.Text = "Справка";
-            // 
-            // MAboutDeveloper
-            // 
-            this.MAboutDeveloper.Name = "MAboutDeveloper";
-            this.MAboutDeveloper.Size = new System.Drawing.Size(152, 22);
-            this.MAboutDeveloper.Text = "Developer";
-            this.MAboutDeveloper.Click += new System.EventHandler(this.developerToolStripMenuItem_Click);
-            // 
             // базаДанныхToolStripMenuItem
             // 
             this.базаДанныхToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -86,34 +72,57 @@
             this.базаДанныхToolStripMenuItem.Size = new System.Drawing.Size(86, 20);
             this.базаДанныхToolStripMenuItem.Text = "База данных";
             // 
+            // создатьToolStripMenuItem
+            // 
+            this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
+            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.создатьToolStripMenuItem.Text = "Создать";
+            this.создатьToolStripMenuItem.Click += new System.EventHandler(this.создатьToolStripMenuItem_Click);
+            // 
+            // открытьToolStripMenuItem
+            // 
+            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
+            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.открытьToolStripMenuItem.Text = "Открыть";
+            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
+            // 
             // сохранитьToolStripMenuItem
             // 
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
-            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // MAbout
+            // 
+            this.MAbout.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.MAboutDeveloper,
+            this.оРазработчикеToolStripMenuItem});
+            this.MAbout.Name = "MAbout";
+            this.MAbout.Size = new System.Drawing.Size(65, 20);
+            this.MAbout.Text = "Справка";
+            // 
+            // MAboutDeveloper
+            // 
+            this.MAboutDeveloper.Name = "MAboutDeveloper";
+            this.MAboutDeveloper.Size = new System.Drawing.Size(162, 22);
+            this.MAboutDeveloper.Text = "Об учреждении";
+            this.MAboutDeveloper.Click += new System.EventHandler(this.developerToolStripMenuItem_Click);
             // 
             // SaveDialog
             // 
             this.SaveDialog.Filter = "SQLite Data Base|*.db";
             // 
-            // открытьToolStripMenuItem
-            // 
-            this.открытьToolStripMenuItem.Name = "открытьToolStripMenuItem";
-            this.открытьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.открытьToolStripMenuItem.Text = "Открыть";
-            this.открытьToolStripMenuItem.Click += new System.EventHandler(this.открытьToolStripMenuItem_Click);
-            // 
             // OpenDialog
             // 
             this.OpenDialog.Filter = "SQLite Data Base|*.db";
             // 
-            // создатьToolStripMenuItem
+            // оРазработчикеToolStripMenuItem
             // 
-            this.создатьToolStripMenuItem.Name = "создатьToolStripMenuItem";
-            this.создатьToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.создатьToolStripMenuItem.Text = "Создать";
-            this.создатьToolStripMenuItem.Click += new System.EventHandler(this.создатьToolStripMenuItem_Click);
+            this.оРазработчикеToolStripMenuItem.Name = "оРазработчикеToolStripMenuItem";
+            this.оРазработчикеToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.оРазработчикеToolStripMenuItem.Text = "О разработчике";
+            this.оРазработчикеToolStripMenuItem.Click += new System.EventHandler(this.оРазработчикеToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -144,6 +153,7 @@
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog OpenDialog;
         private System.Windows.Forms.ToolStripMenuItem создатьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem оРазработчикеToolStripMenuItem;
     }
 }
 

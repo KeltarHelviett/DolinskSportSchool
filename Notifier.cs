@@ -75,11 +75,11 @@ namespace DolinskSportSchool
             return false;
         }
 
-        static public void UpdateTables()
+        static public void UpdateTables(int id = 0)
         {
             for (int i = 0; i < TableForms.Count; i++)
             {
-                TableForms[i].UpdateTable();
+                TableForms[i].UpdateTable(id);
             }
         }
 
