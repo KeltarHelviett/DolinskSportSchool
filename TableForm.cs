@@ -27,7 +27,6 @@ namespace DolinskSportSchool
             this.Text = MetaData.tables[Convert.ToInt32(this.Tag)].displayName;
             GetDateCols();
             FillDBGrid();           
-            AdjustColNames();
             CreateFilters();
             CreateTableEdit();
             Notifier.LookAfterTable(this);
@@ -123,6 +122,7 @@ namespace DolinskSportSchool
             }
             ChangeDateFormat(DateCols);
             DBGrid.Columns[0].Visible = false;
+            AdjustColNames();
             UpdateStats();
             SQLBuilder.Connection.Close();
         }
@@ -213,12 +213,13 @@ namespace DolinskSportSchool
 
         private void AcceptBtn_Click(object sender, EventArgs e)
         {
+            DBGrid.DataSource = null;
+            DBGrid.Rows.Clear();
             int tg = Convert.ToInt32(this.Tag);
             List<ParameterInfo> prms;
             SQLiteCommand command = new SQLiteCommand(
                 string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), 
                 SQLBuilder.BuildFiltersWherePart(Flist, out prms)), SQLBuilder.Connection);
-            RefillRowNumColumn();
             command.Prepare();
             if (prms.Count == 0)
             {
@@ -250,6 +251,7 @@ namespace DolinskSportSchool
             //DBGrid.Font = new Font("Arial Unicode MS", 10);
             DBGrid.DataSource = dt;
             RefillRowNumColumn();
+            AdjustColNames();
             ChangeDateFormat(DateCols);
             DBGrid.Columns[0].Visible = false;
             SQLBuilder.Connection.Close();
@@ -405,6 +407,21 @@ namespace DolinskSportSchool
             DataObject dobj = DBGrid.GetClipboardContent();
             if (dobj != null)
                 Clipboard.SetDataObject(dobj);
+        }
+
+        private void FDG_Click(object sender, EventArgs e)
+        {
+            var watch = System.Diagnostics.Stopwatch.StartNew();
+            FillDBGrid();
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            MessageBox.Show(elapsedMs.ToString());
+        }
+
+        private void Clear_Click(object sender, EventArgs e)
+        {
+            DBGrid.DataSource = null;
+            DBGrid.Rows.Clear();
         }
     }
 }

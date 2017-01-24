@@ -131,7 +131,7 @@ namespace DolinskSportSchool
                 if (columnEditors[i].ShowColumnBox.Checked)
                 {     
                     DBGrid.Columns[ci].Visible = true;
-                    DBGrid.Columns[ci].DisplayIndex = di + 1;
+                    DBGrid.Columns[ci].DisplayIndex = di;// + 1;
                 }
                 else
                 {

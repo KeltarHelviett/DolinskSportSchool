@@ -54,7 +54,7 @@ namespace DolinskSportSchool
             MetaData.AddField(count, "ID", "", DataType.Integer, -1, DataGridViewContentAlignment.MiddleLeft);
             MetaData.AddField(count++, "STAGE_NAME", "Этап", DataType.String, -1, DataGridViewContentAlignment.MiddleCenter);
 
-            MetaData.AddTable("STUDENTS", "Обучающиеся");
+            MetaData.AddTable("STUDENTS", "Обучающиеся", "FAMILY_NAME, FIRST_NAME");
             MetaData.AddField(count, "ID", "", DataType.Integer, -1, DataGridViewContentAlignment.MiddleLeft);
             MetaData.AddField(count, "FAMILY_NAME", "Фамилия", DataType.String, -1, DataGridViewContentAlignment.MiddleLeft);
             MetaData.AddField(count, "FIRST_NAME", "Имя", DataType.String, -1, DataGridViewContentAlignment.MiddleLeft);

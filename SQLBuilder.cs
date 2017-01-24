@@ -124,7 +124,7 @@ namespace DolinskSportSchool
             if (res.Length - 4 > 0)
                 res = res.Remove(res.Length - 4, 4);
 
-            return res;
+            return res + ";";
         }
     }
 }

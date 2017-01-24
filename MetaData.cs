@@ -22,16 +22,18 @@ namespace DolinskSportSchool
         public string name;
         public string displayName;
         public List<Field> fields;
+        public string orderList; // К - Костыль.
     }
     static class MetaData
     {
         public static List<Table> tables = new List<Table>();
-        public static void AddTable(string name, string displayName)
+        public static void AddTable(string name, string displayName, string orderList = "")
         {
             Table t = new Table() ;
             t.name = name;
             t.displayName = displayName;
             t.fields = new List<Field>();
+            t.orderList = orderList;
             tables.Add(t);
         }
         public static void AddField(int ind, string name, string displayName, DataType type, int refereneTable, DataGridViewContentAlignment aligment)
