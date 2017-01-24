@@ -88,7 +88,8 @@ namespace DolinskSportSchool
             SQLBuilder.Connection.Open();
             int tg = Convert.ToInt32(this.Tag);
             SQLiteCommand command = new SQLiteCommand(
-                SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), SQLBuilder.Connection);
+                SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, ") +
+                SQLBuilder.BuildOrderPart(tg), SQLBuilder.Connection);
             SQLiteDataAdapter da = new SQLiteDataAdapter(command);
             DataTable dt = new DataTable();
             da.Fill(dt);
@@ -219,7 +220,8 @@ namespace DolinskSportSchool
             List<ParameterInfo> prms;
             SQLiteCommand command = new SQLiteCommand(
                 string.Format("{0} WHERE {1}", SQLBuilder.BuildSelectPart(tg).Insert(8, MetaData.tables[(int)Tag].name + ".ID, "), 
-                SQLBuilder.BuildFiltersWherePart(Flist, out prms)), SQLBuilder.Connection);
+                SQLBuilder.BuildFiltersWherePart(Flist, out prms)) +
+                SQLBuilder.BuildOrderPart(tg), SQLBuilder.Connection);
             command.Prepare();
             if (prms.Count == 0)
             {

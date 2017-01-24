@@ -126,5 +126,12 @@ namespace DolinskSportSchool
 
             return res + ";";
         }
+
+        static public string BuildOrderPart(int tag)
+        {
+            if (MetaData.tables[tag].orderList != "")
+                return " ORDER BY " + MetaData.tables[tag].orderList;
+            return "";
+        }
     }
 }
