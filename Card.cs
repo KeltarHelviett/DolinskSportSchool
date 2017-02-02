@@ -218,18 +218,22 @@ namespace DolinskSportSchool
 
         private string CreateInsertString(out List<string> prms)
         {
-            string res = string.Format("INSERT INTO {0} VALUES(NULL, ", MetaData.tables[(int)Tag].name);
+            string attribs = "(ID, ";
+            string res = string.Format("INSERT INTO {0}~ VALUES(NULL, ", MetaData.tables[(int)Tag].name);
             Table t = MetaData.tables[(int)Tag];
             int count = 0;
             prms = new List<string>();
             for (int i = 0; i < MetaData.tables[(int)Tag].fields.Count; i++)
             {
-                    if (t.fields[i].displayName == "")//@[TableName][FieldName][randomint]
-                        continue;
-                    prms.Add("@" + t.name + t.fields[i].name + (count++).ToString());
-                    res += prms[prms.Count - 1] + ", ";
+                if (t.fields[i].displayName == "")//@[TableName][FieldName][randomint]
+                    continue;
+                attribs += t.fields[i].name + ", ";
+                prms.Add("@" + t.name + t.fields[i].name + (count++).ToString());
+                res += prms[prms.Count - 1] + ", ";
             }
+            attribs = attribs.Remove(attribs.Length - 2, 2);
             res = res.Remove(res.Length - 2, 2);
+            res = res.Replace("~", attribs + ")");
             res += ");";
             return res;
         }
@@ -237,12 +241,13 @@ namespace DolinskSportSchool
         private void AddNewRecord()
         {
             SQLBuilder.Connection.Open();
-            SQLiteCommand command = new SQLiteCommand();
-            command.Connection = SQLBuilder.Connection;
-            List<string> prms;
-            command.CommandText = CreateInsertString(out prms);
-            command.Prepare();
-            
+            using (SQLiteCommand command = new SQLiteCommand())
+            {
+                command.Connection = SQLBuilder.Connection;
+                List<string> prms;
+                command.CommandText = CreateInsertString(out prms);
+                command.Prepare();
+
                 for (int i = 0; i < editors.Count; i++)
                 {
                     switch (editors[i].et)
@@ -258,9 +263,26 @@ namespace DolinskSportSchool
                             break;
                     }
                 }
-            
-                    command.ExecuteNonQuery();
-           
+                command.ExecuteNonQuery();
+            }
+            SQLBuilder.Connection.Close();
+            SQLBuilder.Connection.Open();
+            using (SQLiteCommand command = new SQLiteCommand())
+            {
+                command.Connection = SQLBuilder.Connection;
+                command.CommandText = string.Format("SELECT ID FROM {0} ORDER BY ID DESC LIMIT 1", MetaData.tables[(int)Tag].name);
+                SQLiteDataAdapter da = new SQLiteDataAdapter(command);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+                try
+                {
+                    this.cardId = Convert.ToInt32(dt.Rows[0][0]);
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
             SQLBuilder.Connection.Close();
             this.Close();
         }

@@ -49,8 +49,15 @@ namespace DolinskSportSchool
         private void onMenuTableClick(object sender, EventArgs e)
         {
             ToolStripMenuItem m = sender as ToolStripMenuItem;
-            TableForm f = new TableForm(Convert.ToInt32(m.Tag));
-            f.Show();
+            try
+            {
+                TableForm f = new TableForm(Convert.ToInt32(m.Tag));
+                f.Show();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Не выбрана База Данных");
+            }
         }
 
         private void Menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
@@ -64,7 +71,6 @@ namespace DolinskSportSchool
 
             if (SaveDialog.FileName != "")
             {
-                MessageBox.Show(SaveDialog.FileName);
                 if (System.IO.File.Exists(SaveDialog.FileName))
                     System.IO.File.Delete(SaveDialog.FileName);
                 System.IO.File.Copy(MetaData.DBName, SaveDialog.FileName);
@@ -139,7 +145,7 @@ namespace DolinskSportSchool
               + "STAGE_ID INTEGER NOT NULL REFERENCES STAGES(ID)"
               + ");";
 
-            MetaData.DBName = Application.StartupPath + "\\asd.db";
+            MetaData.DBName = Application.StartupPath + "\\Временная.db";
 
             SQLBuilder.UpdateConnection();
             SQLiteCommand command = new SQLiteCommand(s, SQLBuilder.Connection);

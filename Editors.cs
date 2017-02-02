@@ -131,7 +131,7 @@ namespace DolinskSportSchool
                 if (columnEditors[i].ShowColumnBox.Checked)
                 {     
                     DBGrid.Columns[ci].Visible = true;
-                    DBGrid.Columns[ci].DisplayIndex = di;// + 1;
+                    DBGrid.Columns[ci].DisplayIndex = di + 1;
                 }
                 else
                 {
@@ -308,6 +308,7 @@ namespace DolinskSportSchool
                 cb.Left = cbx;
                 cb.Top = cby;
                 cb.Font = f;
+                cb.Click += new EventHandler(onCheckBoxClick);
                 cby = cb.Bottom + 1;
                 this.selections.Add(cb);
             }
@@ -366,5 +367,19 @@ namespace DolinskSportSchool
 
         }
 
+        private void onCheckBoxClick(object sender, EventArgs e)
+        {
+            Button b = sender as Button;
+            string res = "";
+            for (int i = 0; i < this.selections.Count; i++)
+            {
+                if (selections[i].Checked)
+                {
+                    res += selections[i].Text + ", ";
+                }
+            }
+            if (res != "")
+                this.summary.Text = res.Remove(res.Length - 2, 2);
+        }
     }
 }
