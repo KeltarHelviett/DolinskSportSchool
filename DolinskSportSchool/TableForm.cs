@@ -268,12 +268,21 @@ namespace DolinskSportSchool
 
         private void EditBtn_Click(object sender, EventArgs e)
         {
-            Card f = new Card(Convert.ToInt32(DBGrid.SelectedCells[0].Value), (int)Tag);
-            f.Text = "Редактирование";
+            try
+            {
+                Card f = new Card(Convert.ToInt32(DBGrid.SelectedCells[0].Value), (int) Tag);
+                f.Text = "Редактирование";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Не выбрана запись для редактирования");
+            }
         }
 
         private void DeleteBtn_Click(object sender, EventArgs e)
         {
+            if (DBGrid.SelectedCells.Count <= 0)
+                return;
             if (MessageBox.Show(
                 "Удалить запись?", "Удалить запись?", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -291,6 +300,8 @@ namespace DolinskSportSchool
         public void UpdateTable(int id = 0)
         {
             AcceptBtn_Click(null, null);
+            if (DBGrid.Rows.Count <= 0)
+                return;
             if (id == 0)
                 DBGrid.Rows[0].Selected = true;
             else if (id == -1)

@@ -145,6 +145,9 @@ namespace DolinskSportSchool
               + "STAGE_ID INTEGER NOT NULL REFERENCES STAGES(ID)"
               + ");";
 
+            s += "INSERT INTO GENDERS VALUES(NULL, \"М\");";
+            s += "INSERT INTO GENDERS VALUES(NULL, \"Ж\");";
+
             MetaData.DBName = Application.StartupPath + "\\Временная.db";
 
             SQLBuilder.UpdateConnection();
