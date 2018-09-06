@@ -253,7 +253,7 @@ namespace DolinskSportSchool
                     switch (editors[i].et)
                     {
                         case EditorType.TextBox:
-                            command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text);
+                            command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text.Trim());
                             break;
                         case EditorType.Date:
                             command.Parameters.AddWithValue(prms[i], (editors[i].c as DateTimePicker).Value.ToString("yyyy-MM-dd"));
@@ -319,7 +319,7 @@ namespace DolinskSportSchool
                 switch (editors[i].et)
                 {
                     case EditorType.TextBox:
-                        command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text);
+                        command.Parameters.AddWithValue(prms[i], (editors[i].c as TextBox).Text.Trim());
                         break;
                     case EditorType.Date:
                         command.Parameters.AddWithValue(prms[i], (editors[i].c as DateTimePicker).Value.ToString("yyyy-MM-dd"));
